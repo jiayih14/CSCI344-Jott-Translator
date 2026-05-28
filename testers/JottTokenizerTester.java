@@ -13,6 +13,10 @@ package testers;
 
 import java.util.ArrayList;
 
+import provided.JottTokenizer;
+import provided.Token;
+import provided.TokenType;
+
 public class JottTokenizerTester {
 
     ArrayList<TestCase> testCases;

@@ -39,22 +39,22 @@ public class JottTokenizer {
 					if (Character.isDigit(ch)){
 						incompleteToken.append(ch);
 					}
-					else if (ch == '.'){
-						// if dot encountered and do is not present
-						// if next char is digit, we append to current ongoing token and set dot to present
-						if ( i+1< line.length() && Character.isDigit(line.charAt(i+1))){
-							incompleteToken.append(ch);
-							dotPresent = true;
-						}
-						else{
-							if (!incompleteToken.isEmpty()){
-								Token newToken = new Token(incompleteToken.toString(), filename, lineNum, TokenType.NUMBER);
-								incompleteToken.setLength(0);
-								dotPresent = false;
-							}
-							incompleteToken.append(ch);
-						}
-					}
+					// else if (ch == '.'){
+					// 	// if dot encountered and do is not present
+					// 	// if next char is digit, we append to current ongoing token and set dot to present
+					// 	if ( i+1< line.length() && Character.isDigit(line.charAt(i+1))){
+					// 		incompleteToken.append(ch);
+					// 		dotPresent = true;
+					// 	}
+					// 	else{
+					// 		if (!incompleteToken.isEmpty()){
+					// 			Token newToken = new Token(incompleteToken.toString(), filename, lineNum, TokenType.NUMBER);
+					// 			incompleteToken.setLength(0);
+					// 			dotPresent = false;
+					// 		}
+					// 		incompleteToken.append(ch);
+					// 	}
+					// }
 				}
 
 			}
@@ -63,4 +63,40 @@ public class JottTokenizer {
 		}
 		return null;
 	}
+	
+	
+	
+private static int identifyKeywordsAndTokens(
+        String line,
+        int index,
+        String filename,
+        int lineNum,
+        ArrayList<Token> tokens
+) {
+
+    StringBuilder word = new StringBuilder();
+
+    // keep reading letters/numbers
+    while (index < line.length() &&
+            Character.isLetterOrDigit(line.charAt(index))) {
+
+        word.append(line.charAt(index));
+        index++;
+    }
+
+    // convert StringBuilder into String
+    String identifier = word.toString();
+
+    // create token and add to token list
+    tokens.add(new Token(
+            identifier,
+            filename,
+            lineNum,
+            TokenType.ID_KEYWORD));
+
+    // move index back one
+    // because outer loop increments again
+    return index - 1;
 }
+}
+
