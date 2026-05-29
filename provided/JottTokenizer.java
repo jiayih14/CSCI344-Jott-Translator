@@ -80,6 +80,12 @@ public class JottTokenizer {
 		return null;
 	}
 
+	/**
+	 * Error logging utility function
+	 * @param err_message
+	 * @param filename
+	 * @param lineNum
+	 */
 	private static void logError(String err_message, String filename, int lineNum){
 		System.err.println("Syntax Error\n" + err_message + "\n" + filename + ":" + lineNum);
 	}
