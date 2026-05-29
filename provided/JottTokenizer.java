@@ -111,9 +111,148 @@ private static int identifyKeywordsAndTokens(
             lineNum,
             TokenType.ID_KEYWORD));
 
-    // move index back one
-    // because outer loop increments again
+
     return index - 1;
 }
+
+private static void addLeftBracket(
+        ArrayList<Token> tokens,
+        String filename,
+        int lineNum) {
+
+    tokens.add(new Token(
+            "[",
+            filename,
+            lineNum,
+            TokenType.L_BRACKET));
 }
 
+
+private static void addRightBracket(
+		ArrayList<Token> tokens,
+		String filename,
+		int lineNum) {
+
+	tokens.add(new Token(
+			"]",
+			filename,
+			lineNum,
+			TokenType.R_BRACKET));
+}
+
+private static void addComma(
+		ArrayList<Token> tokens,
+		String filename,
+		int lineNum) {
+
+	tokens.add(new Token(
+			",",
+			filename,
+			lineNum,
+			TokenType.COMMA));
+
+
+	}
+	private static void addSemicolon(
+			ArrayList<Token> tokens,
+			String filename,
+			int lineNum) {
+
+		tokens.add(new Token(
+				";",
+				filename,
+				lineNum,
+				TokenType.SEMICOLON));	
+
+
+		}
+
+		private static void addColon(
+				ArrayList<Token> tokens,
+				String filename,
+				int lineNum) {
+
+			tokens.add(new Token(
+					":",
+					filename,
+					lineNum,
+					TokenType.COLON));	
+
+
+			}
+
+private static void addAssign(
+				ArrayList<Token> tokens,
+				String filename,
+				int lineNum) {
+
+			tokens.add(new Token(
+					"=",
+					filename,
+					lineNum,
+					TokenType.ASSIGN));
+			}
+
+
+
+	private static void addRightBrace(
+        ArrayList<Token> tokens,
+        String filename,
+        int lineNum) {
+
+    tokens.add(new Token(
+            "}",
+            filename,
+            lineNum,
+            TokenType.R_BRACE));
+
+}
+
+private static void addLeftBrace(
+		ArrayList<Token> tokens,
+		String filename,
+		int lineNum) {
+
+	tokens.add(new Token(
+			"{",
+			filename,
+			lineNum,
+			TokenType.L_BRACE));
+
+	}
+
+	private static int addColonorFCHeader(
+        String line,
+        int index,
+        ArrayList<Token> tokens,
+        String filename,
+        int lineNum) {
+
+    // check if next character is also :
+    if (index + 1 < line.length()
+            && line.charAt(index + 1) == ':') {
+
+        // add :: token
+        tokens.add(new Token(
+                "::",
+                filename,
+                lineNum,
+                TokenType.FC_HEADER));
+
+        // skip over second :
+        index++;
+    }
+
+    // otherwise just regular :
+    else {
+
+        tokens.add(new Token(
+                ":",
+                filename,
+                lineNum,
+                TokenType.COLON));
+    }
+
+    return index;
+}
+}
