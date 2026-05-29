@@ -45,7 +45,8 @@ public class JottTokenizer {
 					}
 					else if (ch == '.'){
 						// if dot encountered
-						// if next char is digit, we append to current ongoing token and set dot to present
+						// if next char is digit and the current type is NUMBER,
+						// we append to current ongoing token and set dot to present
 						if ( i+1< line.length()
 								&& Character.isDigit(line.charAt(i+1))
 								&& !dotPresent
@@ -55,7 +56,7 @@ public class JottTokenizer {
 							incompleteToken.append(ch);
 							dotPresent = true;
 						}
-						// else if the previous char is digit, we append the dot to ongoing token
+						// else if the current type is NUMBER, we append the dot to ongoing token
 						// and announce token type Number.
 						else if (type == TokenType.NUMBER){
 							incompleteToken.append(ch);
@@ -67,7 +68,7 @@ public class JottTokenizer {
 						}
 						// if neither of above are true, we have encountered an error
 						else{
-							//error
+							logError("Invalid Number Format near ','", filename, lineNum);
 						}
 					}
 				}
@@ -77,5 +78,9 @@ public class JottTokenizer {
 			System.out.println(e.getMessage());
 		}
 		return null;
+	}
+
+	private static void logError(String err_message, String filename, int lineNum){
+		System.err.println("Syntax Error\n" + err_message + "\n" + filename + ":" + lineNum);
 	}
 }
