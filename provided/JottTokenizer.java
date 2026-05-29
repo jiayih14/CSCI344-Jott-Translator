@@ -32,27 +32,42 @@ public class JottTokenizer {
 
 			while ((line = br.readLine()) != null){
 				lineNum++;
+				TokenType type = null;
 				for (int i = 0; i < line.length(); i++ ){
 					char ch = line.charAt(i);
 
 					// if char is a digit, append to current ongoing token
 					if (Character.isDigit(ch)){
+						if(type ==  null){
+							type = TokenType.NUMBER;
+						}
 						incompleteToken.append(ch);
 					}
 					else if (ch == '.'){
-						// if dot encountered and do is not present
+						// if dot encountered
 						// if next char is digit, we append to current ongoing token and set dot to present
-						if ( i+1< line.length() && Character.isDigit(line.charAt(i+1))){
+						if ( i+1< line.length()
+								&& Character.isDigit(line.charAt(i+1))
+								&& !dotPresent
+								&& (type == null || type == TokenType.NUMBER)){
+
+							type = TokenType.NUMBER;
 							incompleteToken.append(ch);
 							dotPresent = true;
 						}
-						else{
-							if (!incompleteToken.isEmpty()){
-								Token newToken = new Token(incompleteToken.toString(), filename, lineNum, TokenType.NUMBER);
-								incompleteToken.setLength(0);
-								dotPresent = false;
-							}
+						// else if the previous char is digit, we append the dot to ongoing token
+						// and announce token type Number.
+						else if (type == TokenType.NUMBER){
 							incompleteToken.append(ch);
+							Token new_token = new Token(incompleteToken.toString(), filename, lineNum, TokenType.NUMBER);
+							tokens.add(new_token);
+							incompleteToken.setLength(0);
+							dotPresent = false;
+							type = null;
+						}
+						// if neither of above are true, we have encountered an error
+						else{
+							//error
 						}
 					}
 				}
