@@ -2,10 +2,11 @@ package provided;
 
 /**
  * This class is responsible for tokenizing Jott code.
- * 
- * @author  
+ *
+ * @author
  * Kifekachukwu Nwosu
  * Jiayi Huang
+ * Matt Gleich
  **/
 
 import java.io.BufferedReader;
@@ -144,6 +145,14 @@ public class JottTokenizer {
 						}
 					}
 
+					// string literal
+					else if (ch == '"') {
+						i = tokenizeString(line, i, filename, lineNum, tokens);
+						if (i == -1) {
+							return null;
+						}
+					}
+
 					else {
 						logError("Invalid token \"" + ch + "\"", filename, lineNum);
 						return null;
@@ -155,9 +164,9 @@ public class JottTokenizer {
 		}
 		return tokens;
 	}
-	
-	
-	
+
+
+
 	/**
 	 *
 	 * Helper method to identify keywords and identifiers in Jott. If the current character is a letter, we read in characters until we reach a non-letter/digit character. We then check if the resulting string is a keyword or identifier and create the appropriate token.
@@ -453,6 +462,42 @@ public class JottTokenizer {
 
 		return index;
 	}
+		/**
+		 * Helper method to tokenize a string literal.
+		 * Strings must be enclosed in double quotes, cannot span lines, and may only
+		 * contain letters, digits, or spaces.
+		 * @author Matt Gleich
+		 */
+		private static int tokenizeString(
+				String line,
+				int index,
+				String filename,
+				int lineNum,
+				ArrayList<Token> tokens
+		) {
+			StringBuilder str = new StringBuilder();
+			str.append('"');
+			index++; // skip opening quote
+
+			while (index < line.length()) {
+				char ch = line.charAt(index);
+				if (ch == '"') {
+					str.append('"');
+					tokens.add(new Token(str.toString(), filename, lineNum, TokenType.STRING));
+					return index;
+				}
+				if (!Character.isLetterOrDigit(ch) && ch != ' ') {
+					logError("Invalid character '" + ch + "' in string", filename, lineNum);
+					return -1;
+				}
+				str.append(ch);
+				index++;
+			}
+
+			logError("Unterminated string literal", filename, lineNum);
+			return -1;
+		}
+
 		/**
 		 * Error logging utility function
 		 * @param err_message
