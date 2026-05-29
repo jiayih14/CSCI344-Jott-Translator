@@ -118,13 +118,14 @@ public class JottTokenizer {
 								lineNum);
 					}
 
-					// =
+					// = or ==
 					else if (ch == '=') {
-
-						addAssign(
-								tokens,
-								filename,
-								lineNum);
+						if (i + 1 < line.length() && line.charAt(i + 1) == '=') {
+							tokens.add(new Token("==", filename, lineNum, TokenType.REL_OP));
+							i++;
+						} else {
+							addAssign(tokens, filename, lineNum);
+						}
 					}
 
 					// math operators
@@ -134,6 +135,27 @@ public class JottTokenizer {
 								filename,
 								lineNum,
 								TokenType.MATH_OP));
+					}
+
+					// relational operators: < <= > >=
+					else if (ch == '<' || ch == '>') {
+						if (i + 1 < line.length() && line.charAt(i + 1) == '=') {
+							tokens.add(new Token(ch + "=", filename, lineNum, TokenType.REL_OP));
+							i++;
+						} else {
+							tokens.add(new Token(String.valueOf(ch), filename, lineNum, TokenType.REL_OP));
+						}
+					}
+
+					// != or invalid !
+					else if (ch == '!') {
+						if (i + 1 < line.length() && line.charAt(i + 1) == '=') {
+							tokens.add(new Token("!=", filename, lineNum, TokenType.REL_OP));
+							i++;
+						} else {
+							logError("Invalid token \"!\". \"!\" expects following \"=\"", filename, lineNum);
+							return null;
+						}
 					}
 
 					// . or digit
@@ -259,7 +281,7 @@ public class JottTokenizer {
 				TokenType.NUMBER
 		));
 
-		return index;
+		return index - 1;
 	}
 
 	/**
