@@ -34,11 +34,28 @@ public class JottTokenizer {
 				lineNum++;
 				for (int i = 0; i < line.length(); i++ ){
 					char ch = line.charAt(i);
+					if (Character.isLetter(ch)) {
 
-					// if char is a digit, append to current ongoing token
-					if (Character.isDigit(ch)){
-						incompleteToken.append(ch);
-					}
+						i = identifyKeywordsAndTokens(
+                    line,
+                    i,
+                    filename,
+                    lineNum,
+                    tokens);
+        }
+    if (ch == '#') {
+        break;
+    }
+
+    // whitespace
+    else if (Character.isWhitespace(ch)) {
+        continue;
+    }
+					// // if char is a digit, append to current ongoing token
+					// if (Character.isDigit(ch)){
+					// 	incompleteToken.append(ch);
+					// }
+					
 					// else if (ch == '.'){
 					// 	// if dot encountered and do is not present
 					// 	// if next char is digit, we append to current ongoing token and set dot to present
@@ -61,7 +78,7 @@ public class JottTokenizer {
 		} catch (IOException e){
 			System.out.println(e.getMessage());
 		}
-		return null;
+		return tokens;
 	}
 	
 	
