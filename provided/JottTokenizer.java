@@ -3,7 +3,8 @@ package provided;
 /**
  * This class is responsible for tokenizing Jott code.
  * 
- * @author 
+ * @author  
+ * Kifekachukwu Nwosu
  **/
 
 import java.io.BufferedReader;
@@ -34,7 +35,16 @@ public class JottTokenizer {
 				lineNum++;
 				for (int i = 0; i < line.length(); i++ ){
 					char ch = line.charAt(i);
-					if (Character.isLetter(ch)) {
+
+    if (ch == '#') {
+        break;
+    }
+
+    // whitespace
+    else if (Character.isWhitespace(ch)) {
+        continue;
+    }
+	else if (Character.isLetter(ch)) {
 
 						i = identifyKeywordsAndTokens(
                     line,
@@ -43,13 +53,78 @@ public class JottTokenizer {
                     lineNum,
                     tokens);
         }
-    if (ch == '#') {
-        break;
+	    // [
+    else if (ch == '[') {
+
+        addLeftBracket(
+                tokens,
+                filename,
+                lineNum);
     }
 
-    // whitespace
-    else if (Character.isWhitespace(ch)) {
-        continue;
+    // ]
+    else if (ch == ']') {
+
+        addRightBracket(
+                tokens,
+                filename,
+                lineNum);
+    }
+
+    // {
+    else if (ch == '{') {
+
+        addLeftBrace(
+                tokens,
+                filename,
+                lineNum);
+    }
+
+    // }
+    else if (ch == '}') {
+
+        addRightBrace(
+                tokens,
+                filename,
+                lineNum);
+    }
+
+    // ;
+    else if (ch == ';') {
+
+        addSemicolon(
+                tokens,
+                filename,
+                lineNum);
+    }
+
+    // ,
+    else if (ch == ',') {
+
+        addComma(
+                tokens,
+                filename,
+               lineNum);
+    }
+
+    // :
+    else if (ch == ':') {
+
+        i = addColonorFCHeader(
+                line,
+                i,
+                tokens,
+                filename,
+                lineNum);
+    }
+
+    // =
+    else if (ch == '=') {
+
+        addAssign(
+                tokens,
+                filename,
+                lineNum);
     }
 					// // if char is a digit, append to current ongoing token
 					// if (Character.isDigit(ch)){
@@ -72,7 +147,18 @@ public class JottTokenizer {
 					// 		incompleteToken.append(ch);
 					// 	}
 					// }
+					    else {
+
+        System.err.println("Syntax Error:");
+        System.err.println(
+                "Invalid token \"" + ch + "\"");
+        System.err.println(
+                filename + ":" + lineNum);
+
+        return null;
+    }
 				}
+				
 
 			}
 		} catch (IOException e){
@@ -83,7 +169,19 @@ public class JottTokenizer {
 	
 	
 	
+/**
+ * 
+ * Helper method to identify keywords and identifiers in Jott. If the current character is a letter, we read in characters until we reach a non-letter/digit character. We then check if the resulting string is a keyword or identifier and create the appropriate token.
+ * @author   Kifekachukwu Nwosu
+ * @param line
+ * @param index
+ * @param filename
+ * @param lineNum
+ * @param tokens
+ * @return
+ */
 private static int identifyKeywordsAndTokens(
+	
         String line,
         int index,
         String filename,
@@ -114,7 +212,14 @@ private static int identifyKeywordsAndTokens(
 
     return index - 1;
 }
-
+/**
+ * Helper method to add a left bracket token to the token list
+ *  @author  
+ * Kifekachukwu Nwosu
+ * @param tokens
+ * @param filename
+ * @param lineNum
+ */
 private static void addLeftBracket(
         ArrayList<Token> tokens,
         String filename,
@@ -127,7 +232,14 @@ private static void addLeftBracket(
             TokenType.L_BRACKET));
 }
 
-
+/**
+ * Helper method to add a right bracket token to the token list
+ *  @author  
+ * Kifekachukwu Nwosu
+ * @param tokens
+ * @param filename
+ * @param lineNum
+ */
 private static void addRightBracket(
 		ArrayList<Token> tokens,
 		String filename,
@@ -139,7 +251,14 @@ private static void addRightBracket(
 			lineNum,
 			TokenType.R_BRACKET));
 }
-
+/**
+ * Helper method to add a left brace token to the token list
+ *  @author  
+ * Kifekachukwu Nwosu
+ * @param tokens
+ * @param filename
+ * @param lineNum
+ */
 private static void addComma(
 		ArrayList<Token> tokens,
 		String filename,
@@ -153,6 +272,13 @@ private static void addComma(
 
 
 	}
+/**
+ * Helper method to add a right brace token to the token list
+ * @author	Kifekachukwu Nwosu
+ * @param tokens
+ * @param filename
+ * @param lineNum
+ */
 	private static void addSemicolon(
 			ArrayList<Token> tokens,
 			String filename,
@@ -166,7 +292,13 @@ private static void addComma(
 
 
 		}
-
+/**
+ * Helper method to add a right brace token to the token list
+ *  @author	Kifekachukwu Nwosu	
+ * @param tokens
+ * @param filename
+ * @param lineNum
+ */
 		private static void addColon(
 				ArrayList<Token> tokens,
 				String filename,
@@ -180,7 +312,13 @@ private static void addComma(
 
 
 			}
-
+/**
+ * Helper method to add a right brace token to the token list
+ *  @author	Kifekachukwu Nwosu
+ * @param tokens
+ * @param filename
+ * @param lineNum
+ */
 private static void addAssign(
 				ArrayList<Token> tokens,
 				String filename,
@@ -194,7 +332,13 @@ private static void addAssign(
 			}
 
 
-
+/**
+ * Helper method to add a right brace token to the token list
+ *  @author	Kifekachukwu Nwosu
+ * @param tokens
+ * @param filename
+ * @param lineNum
+ */
 	private static void addRightBrace(
         ArrayList<Token> tokens,
         String filename,
@@ -207,7 +351,13 @@ private static void addAssign(
             TokenType.R_BRACE));
 
 }
-
+/**
+ * Helper method to add a right brace token to the token list
+ *  @author	Kifekachukwu Nwosu
+ * @param tokens
+ * @param filename
+ * @param lineNum
+ */
 private static void addLeftBrace(
 		ArrayList<Token> tokens,
 		String filename,
@@ -221,6 +371,16 @@ private static void addLeftBrace(
 
 	}
 
+	/**
+	 * Helper method to add a right brace token to the token list	
+	 *  @author	Kifekachukwu Nwosu
+	 * @param line
+	 * @param index
+	 * @param tokens
+	 * @param filename
+	 * @param lineNum
+	 * @return
+	 */
 	private static int addColonorFCHeader(
         String line,
         int index,
@@ -232,18 +392,15 @@ private static void addLeftBrace(
     if (index + 1 < line.length()
             && line.charAt(index + 1) == ':') {
 
-        // add :: token
         tokens.add(new Token(
                 "::",
                 filename,
                 lineNum,
                 TokenType.FC_HEADER));
 
-        // skip over second :
         index++;
     }
 
-    // otherwise just regular :
     else {
 
         tokens.add(new Token(
