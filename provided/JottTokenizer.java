@@ -126,6 +126,15 @@ public class JottTokenizer {
 								lineNum);
 					}
 
+					// math operators
+					else if (ch == '+' || ch == '-' || ch == '*' || ch == '/') {
+						tokens.add(new Token(
+								String.valueOf(ch),
+								filename,
+								lineNum,
+								TokenType.MATH_OP));
+					}
+
 					// . or digit
 					else if (ch == '.' || Character.isDigit(ch)){
 						i = identifyNumber(tokens, filename, lineNum, i, line);
