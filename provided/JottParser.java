@@ -20,4 +20,16 @@ public class JottParser {
     public static JottTree parse(ArrayList<Token> tokens){
 		return null;
     }
+
+    private static void addRightBrace(
+        ArrayList<Token> tokens,
+        String filename,
+        int lineNum) {
+
+    tokens.add(new Token(
+            "}",
+            filename,
+            lineNum,
+            TokenType.R_BRACE));
+}
 }

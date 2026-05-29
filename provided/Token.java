@@ -1,9 +1,5 @@
 package provided;
-/**
- * Class representing a token string for the Jott translator
- *
- * @author Scott C. Johnson
- */
+
 public class Token {
 
     private final String token;
