@@ -7,6 +7,7 @@ package provided;
  * Kifekachukwu Nwosu
  * Jiayi Huang
  * Matt Gleich
+ * Alvin Jiang
  **/
 
 import java.io.BufferedReader;
