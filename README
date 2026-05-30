@@ -1,6 +1,27 @@
-This file contains provided code, testers, and test cases.
+Authors: Teju Rajbabu, Jiayi Huang
 
-provided shouls be a top level package in your src directory
-JottParserTester and JottTokenizerTester classes should be in a package call testers.
+Phase 1 implements the Jott Tokenizer, responsible for converting a .jott source file into a sequence of tokens based
+on the DFA provided in the project specification. The tokenizer was fully completed, compiled, and tested by all group members.
 
-the testCases directories should be in the working directory of your project. 
+This project requires JDK 18 or higher to compile and run. This should be checked before compilation with
+	java -version and javac -version. Environment variables should also include the path to the JDK bin directory.
+
+This should compile the project:
+javac provided/*.java testers/JottTokenizerTester.java
+
+This should run the project:
+java testers.JottTokenizerTester
+
+This has been tested by all members. 
+
+As expected of the project structure: 
+The provided package should be a top-level package in the src/ folder.
+
+The tester classes (Jott PaserTester and JottTokenizerTester), should be in a package named testers.
+
+The testCases directory should be located in the project's working directory.
+
+Phase 1: All test cases ran successfully with 12/12 passed.
+Project tested with other samples in own environments and confirmed by individual contributors.
+Project was tested on cs servers and is confirmed to run successfully with no errors.
+No external libraries were used in the project.
