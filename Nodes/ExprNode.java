@@ -1,0 +1,86 @@
+package Nodes;
+
+import provided.JottTree;
+import provided.Token;
+import provided.TokenType;
+
+import java.util.ArrayList;
+
+public class ExprNode implements JottTree {
+
+    private OperandNode leftOperand;
+    private Token operator;
+    private OperandNode rightOperand;
+    private Token stringLiteral;
+    private BoolNode boolNode;
+
+    public ExprNode(Token stringLiteral) {
+        this.stringLiteral = stringLiteral;
+    }
+
+    public ExprNode(BoolNode boolNode) {
+        this.boolNode = boolNode;
+    }
+
+    public ExprNode(OperandNode operand) {
+        this.leftOperand = operand;
+    }
+
+    public ExprNode(OperandNode leftOperand, Token operator, OperandNode rightOperand) {
+        this.leftOperand = leftOperand;
+        this.operator = operator;
+        this.rightOperand = rightOperand;
+    }
+
+    public static ExprNode parse(ArrayList<Token> tokens) {
+        if (ParserHelper.checkType(tokens, TokenType.STRING)) {
+            return new ExprNode(tokens.remove(0));
+        }
+
+        if (BoolNode.checkIsBool(tokens)) {
+            return new ExprNode(BoolNode.parse(tokens));
+        }
+
+        OperandNode left = OperandNode.parse(tokens);
+
+        if (ParserHelper.checkType(tokens, TokenType.REL_OP) || ParserHelper.checkType(tokens, TokenType.MATH_OP)) {
+            Token op = tokens.remove(0);
+            OperandNode right = OperandNode.parse(tokens);
+            return new ExprNode(left, op, right);
+        }
+
+        return new ExprNode(left);
+    }
+
+    @Override
+    public String convertToJott() {
+        if (stringLiteral != null) {
+            return stringLiteral.getToken();
+        }
+        if (boolNode != null) {
+            return boolNode.convertToJott();
+        }
+        if (operator != null) {
+            return leftOperand.convertToJott() + " " + operator.getToken() + " " + rightOperand.convertToJott();
+        }
+        return leftOperand.convertToJott();
+    }
+    @Override
+    public String convertToJava(String className){
+        return null;
+    }
+
+    @Override
+    public String convertToC(){
+        return null;
+    }
+    @Override
+    public String convertToPython(){
+        return null;
+    }
+
+    @Override
+    public boolean validateTree() {
+        return false;
+    }
+}

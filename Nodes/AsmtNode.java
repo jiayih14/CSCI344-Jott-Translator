@@ -1,0 +1,49 @@
+package Nodes;
+
+import provided.JottTree;
+import provided.Token;
+import provided.TokenType;
+
+import java.util.ArrayList;
+
+public class AsmtNode implements JottTree {
+
+    private Token id;
+    private ExprNode expr;
+
+    public AsmtNode(Token id, ExprNode expr) {
+        this.id = id;
+        this.expr = expr;
+    }
+
+    public static AsmtNode parse(ArrayList<Token> tokens) {
+        Token id = ParserHelper.expect(tokens, TokenType.ID_KEYWORD, "Expected an identifier at the start of an assignment");
+        ParserHelper.expect(tokens, TokenType.ASSIGN, "Expected '=' in assignment");
+        ExprNode expr = ExprNode.parse(tokens);
+        ParserHelper.expect(tokens, TokenType.SEMICOLON, "Expected ';' to end assignment statement");
+        return new AsmtNode(id, expr);
+    }
+
+    @Override
+    public String convertToJott() {
+        return id.getToken() + " = " + expr.convertToJott() + ";";
+    }
+    @Override
+    public String convertToJava(String className){
+        return null;
+    }
+
+    @Override
+    public String convertToC(){
+        return null;
+    }
+    @Override
+    public String convertToPython(){
+        return null;
+    }
+
+    @Override
+    public boolean validateTree() {
+        return false;
+    }
+}
