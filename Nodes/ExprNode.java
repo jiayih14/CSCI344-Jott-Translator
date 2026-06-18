@@ -1,3 +1,18 @@
+/**
+ * File name: ExprNode.java
+ * Author: Alvin Jiang
+ *
+ * This file defines the ExprNode class, which represents an expression
+ *  in the Jott parse tree shown the following:
+ *
+ *  <expr> -> <operand> | <operand> <relop> <operand> |
+ * <operand> <mathop> <operand> | <string_literal> |
+ * <bool>
+ *
+ * The class provides functionality to parse expression statement based on the provided grammar.
+ * It also allows conversion to Jott, Java, C and Python
+ */
+
 package Nodes;
 
 import provided.JottTree;
@@ -14,18 +29,38 @@ public class ExprNode implements JottTree {
     private Token stringLiteral;
     private BoolNode boolNode;
 
+    /**
+     * Constructor for Expr Node that takes in string token
+     * @param stringLiteral string token
+     */
     public ExprNode(Token stringLiteral) {
         this.stringLiteral = stringLiteral;
     }
 
+
+    /**
+     * Constructor for Expr Node that takes in boolean node
+     * @param boolNode boolean node
+     */
     public ExprNode(BoolNode boolNode) {
         this.boolNode = boolNode;
     }
 
+    /**
+     * Constructor for Expr Node that takes in operand node
+     * @param operand operand node
+     */
     public ExprNode(OperandNode operand) {
         this.leftOperand = operand;
     }
 
+    /**
+     * Constructor for Expr Node that takes in left operand node, operator token, and right
+     * operand node
+     * @param leftOperand
+     * @param operator
+     * @param rightOperand
+     */
     public ExprNode(OperandNode leftOperand, Token operator, OperandNode rightOperand) {
         this.leftOperand = leftOperand;
         this.operator = operator;

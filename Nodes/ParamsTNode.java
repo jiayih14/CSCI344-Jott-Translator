@@ -1,3 +1,16 @@
+/**
+ * File name: ParamsTNode.java
+ * Author: Alvin Jiang
+ *
+ * This file defines the ParamsTNode class, which represents a grammar
+ * in the Jott parse tree shown the following:
+ *
+ *  <params_t> -> ,<expr>
+ *
+ * The class provides functionality to parse based on the provided grammar.
+ * It also allows conversion to Jott, Java, C and Python
+ */
+
 package Nodes;
 
 import provided.JottTree;
@@ -10,6 +23,10 @@ public class ParamsTNode implements JottTree {
 
     private ExprNode expr;
 
+    /**
+     * Constructor for Params T Node
+     * @param expr expr node
+     */
     public ParamsTNode(ExprNode expr) {
         this.expr = expr;
     }

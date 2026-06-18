@@ -1,3 +1,16 @@
+/**
+ * File name: OperandNode.java
+ * Author: Alvin Jiang
+ *
+ * This file defines the OperandNode class, which represents a grammar for operand statement or function call
+ * in the Jott parse tree shown the following:
+ *
+ *  <operand> -> <id> | <num> | <func_call> | -<num>
+ *
+ * The class provides functionality to parse a parameter declaration statement based on the provided grammar.
+ * It also allows conversion to Jott, Java, C and Python
+ */
+
 package Nodes;
 
 import provided.JottTree;
@@ -12,11 +25,20 @@ public class OperandNode implements JottTree {
     private boolean negative;
     private FuncCallNode funcCall;
 
+    /**
+     * Constructor for Operand Node that takes in id/num and sign
+     * @param idOrNum id or num token
+     * @param negative bool for sign
+     */
     public OperandNode(Token idOrNum, boolean negative) {
         this.idOrNum = idOrNum;
         this.negative = negative;
     }
 
+    /**
+     * Constructor for Operand Node that takes in function call node
+     * @param funcCall function call node
+     */
     public OperandNode(FuncCallNode funcCall) {
         this.funcCall = funcCall;
     }

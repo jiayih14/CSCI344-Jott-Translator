@@ -7,6 +7,8 @@ package provided;
  * @author
  */
 
+import Nodes.ProgramNode;
+
 import java.util.ArrayList;
 
 public class JottParser {
@@ -18,6 +20,10 @@ public class JottParser {
      *         or null upon an error in parsing.
      */
     public static JottTree parse(ArrayList<Token> tokens){
-		return null;
+        // this line is commented out because Function Def Node is a stubbed node
+        // when everything is ready, remove return null and uncomment the following line :)
+
+//		return ProgramNode.parse(tokens);
+        return null;
     }
 }

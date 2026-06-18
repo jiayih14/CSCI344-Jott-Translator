@@ -1,3 +1,16 @@
+/**
+ * File name: FuncCallNode.java
+ * Author: Alvin Jiang
+ *
+ * This file defines the FuncCallNode class, which represents a grammar for function call
+ *  in the Jott parse tree shown the following:
+ *
+ *  <func_call> -> :: <id>[<params>]
+ *
+ * The class provides functionality to parse a function call statement based on the provided grammar.
+ * It also allows conversion to Jott, Java, C and Python
+ */
+
 package Nodes;
 
 import provided.JottTree;
@@ -11,6 +24,11 @@ public class FuncCallNode implements JottTree {
     private Token funcName;
     private ParamsNode params;
 
+    /**
+     * Constructor for FuncCall Node
+     * @param funcName function name token
+     * @param params parameter node
+     */
     public FuncCallNode(Token funcName, ParamsNode params) {
         this.funcName = funcName;
         this.params = params;
