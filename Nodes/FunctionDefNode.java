@@ -20,6 +20,10 @@ public class FunctionDefNode implements JottTree {
         this.fBody = fBody;
     }
 
+    public static FunctionDefNode parse(ArrayList<Token> tokens){
+        return null;
+    }
+
     @Override
     public String convertToJott() {
         return null;
