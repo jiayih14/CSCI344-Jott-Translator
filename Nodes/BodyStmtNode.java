@@ -13,7 +13,25 @@ import provided.JottTree;
  */
 public class BodyStmtNode implements JottTree {
 
-    public BodyStmtNode(){
+    private IfStmtNode ifStmtNode;
+    private WhileNode whileNode;
+    private AsmtNode asmtNode;
+    private FuncCallNode funcCallNode;
+
+    public BodyStmtNode(IfStmtNode ifStmtNode) {
+        this.ifStmtNode = ifStmtNode;
+    }
+
+    public BodyStmtNode(WhileNode whileNode) {
+        this.whileNode = whileNode;
+    }
+
+    public BodyStmtNode(AsmtNode asmtNode) {
+        this.asmtNode = asmtNode;
+    }
+
+    public BodyStmtNode(FuncCallNode funcCallNode) {
+        this.funcCallNode = funcCallNode;
     }
 
     @Override
