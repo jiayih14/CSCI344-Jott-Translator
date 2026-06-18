@@ -34,10 +34,29 @@ public class BodyStmtNode implements JottTree {
         this.funcCallNode = funcCallNode;
     }
 
+
     @Override
     public String convertToJott() {
-        return null;
+
+        if (ifStmtNode != null) {
+            return ifStmtNode.convertToJott();
+        }
+
+        if (whileNode != null) {
+            return whileNode.convertToJott();
+        }
+
+        if (asmtNode != null) {
+            return asmtNode.convertToJott();
+        }
+
+        if (funcCallNode != null) {
+            return funcCallNode.convertToJott() + ";";
+        }
+
+        return "";
     }
+
     @Override
     public String convertToJava(String className){
         return null;
