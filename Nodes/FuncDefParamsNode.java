@@ -2,22 +2,67 @@ package Nodes;
 
 import provided.JottTree;
 import provided.Token;
+import provided.TokenType;
 
 import java.util.ArrayList;
 
 public class FuncDefParamsNode implements JottTree {
 
-    private Token varName;
-    private Token type;
-    public FuncDefParamsNode(Token varName, Token type){
-        this.varName = varName;
+    private Token id;
+    private TypeNode type;
+    private ArrayList<FuncDefParamsTNode> rest;
+
+    /**
+     * Constructor for Function Definition Params Node.
+     * An empty parameter list is represented by a null id.
+     * @param id the first parameter name, or null when there are no parameters
+     * @param type the first parameter type, or null when there are no parameters
+     * @param rest the remaining comma separated parameters
+     */
+    public FuncDefParamsNode(Token id, TypeNode type, ArrayList<FuncDefParamsTNode> rest) {
+        this.id = id;
         this.type = type;
+        this.rest = rest;
+    }
+
+    /**
+     * parse function for function definition params node
+     * @param tokens a list of tokens to be consumed
+     * @return a FuncDefParamsNode
+     */
+    public static FuncDefParamsNode parse(ArrayList<Token> tokens) {
+        ArrayList<FuncDefParamsTNode> rest = new ArrayList<>();
+
+        // empty parameter list: the next token closes the bracket
+        if (ParserHelper.checkType(tokens, TokenType.R_BRACKET)) {
+            return new FuncDefParamsNode(null, null, rest);
+        }
+
+        Token id = ParserHelper.expect(tokens, TokenType.ID_KEYWORD, "Expected a parameter name");
+        ParserHelper.expect(tokens, TokenType.COLON, "Expected ':' after parameter name");
+        TypeNode type = TypeNode.parse(tokens);
+
+        while (ParserHelper.checkType(tokens, TokenType.COMMA)) {
+            rest.add(FuncDefParamsTNode.parse(tokens));
+        }
+
+        return new FuncDefParamsNode(id, type, rest);
     }
 
     @Override
     public String convertToJott() {
-        return null;
+        if (id == null) {
+            return "";
+        }
+
+        StringBuilder result = new StringBuilder();
+        result.append(id.getToken()).append(":").append(type.convertToJott());
+        for (FuncDefParamsTNode node : rest) {
+            result.append(node.convertToJott());
+        }
+        return result.toString();
     }
+
     @Override
     public String convertToJava(String className){
         return null;
