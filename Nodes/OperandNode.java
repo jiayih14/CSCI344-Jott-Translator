@@ -25,11 +25,20 @@ public class OperandNode implements JottTree {
     private boolean negative;
     private FuncCallNode funcCall;
 
+    /**
+     * Constructor for Operand Node that takes in id/num and sign
+     * @param idOrNum id or num token
+     * @param negative bool for sign
+     */
     public OperandNode(Token idOrNum, boolean negative) {
         this.idOrNum = idOrNum;
         this.negative = negative;
     }
 
+    /**
+     * Constructor for Operand Node that takes in function call node
+     * @param funcCall function call node
+     */
     public OperandNode(FuncCallNode funcCall) {
         this.funcCall = funcCall;
     }

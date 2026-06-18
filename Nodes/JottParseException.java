@@ -9,6 +9,10 @@ package Nodes;
 
 public class JottParseException extends RuntimeException {
 
+    /**
+     * Constructor for Jott Parse Exception
+     * @param message exception message
+     */
     public JottParseException(String message) {
         super(message);
     }

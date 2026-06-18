@@ -24,6 +24,11 @@ public class FuncCallNode implements JottTree {
     private Token funcName;
     private ParamsNode params;
 
+    /**
+     * Constructor for FuncCall Node
+     * @param funcName function name token
+     * @param params parameter node
+     */
     public FuncCallNode(Token funcName, ParamsNode params) {
         this.funcName = funcName;
         this.params = params;

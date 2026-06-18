@@ -26,7 +26,7 @@ public class FunctionReturnNode implements JottTree {
 
     /**
      * Constructor for Function Return Node
-     * @param type
+     * @param type type node
      */
     public FunctionReturnNode (TypeNode type){
         this.type = type;
@@ -38,7 +38,6 @@ public class FunctionReturnNode implements JottTree {
      * @return a FunctionReturnNode
      */
     public static FunctionReturnNode parse(ArrayList<Token> tokens){
-        Token firstToken = ParserHelper.peek(tokens);
 
         if(ParserHelper.checkValue(tokens, "Void")){
             tokens.remove(0);

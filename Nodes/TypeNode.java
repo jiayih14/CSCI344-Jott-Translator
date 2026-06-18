@@ -23,6 +23,10 @@ public class TypeNode implements JottTree {
 
     private Token typeToken;
 
+    /**
+     * Constructor for Type Node
+     * @param typeToken type token
+     */
     public TypeNode(Token typeToken) {
         this.typeToken = typeToken;
     }

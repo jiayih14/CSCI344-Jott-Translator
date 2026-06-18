@@ -24,6 +24,11 @@ public class ParamsNode implements JottTree {
     private ExprNode firstParam;
     private ArrayList<ParamsTNode> additionalParams;
 
+    /**
+     * Constructor for Params Node
+     * @param firstParam first parameter
+     * @param additionalParams more parameters
+     */
     public ParamsNode(ExprNode firstParam, ArrayList<ParamsTNode> additionalParams) {
         this.firstParam = firstParam;
         this.additionalParams = additionalParams;

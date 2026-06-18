@@ -24,6 +24,11 @@ public class FuncDefParamsTNode implements JottTree {
     private Token id;
     private TypeNode type;
 
+    /**
+     * Constructor for Function Definition Parameter T Node
+     * @param id id token
+     * @param type type node
+     */
     public FuncDefParamsTNode(Token id, TypeNode type) {
         this.id = id;
         this.type = type;

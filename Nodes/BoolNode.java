@@ -23,6 +23,10 @@ public class BoolNode implements JottTree {
 
     private Token boolToken;
 
+    /**
+     * Constructor for Bool Node
+     * @param boolToken boolean token
+     */
     public BoolNode(Token boolToken) {
         this.boolToken = boolToken;
     }

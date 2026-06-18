@@ -23,6 +23,10 @@ public class ParamsTNode implements JottTree {
 
     private ExprNode expr;
 
+    /**
+     * Constructor for Params T Node
+     * @param expr expr node
+     */
     public ParamsTNode(ExprNode expr) {
         this.expr = expr;
     }

@@ -29,18 +29,38 @@ public class ExprNode implements JottTree {
     private Token stringLiteral;
     private BoolNode boolNode;
 
+    /**
+     * Constructor for Expr Node that takes in string token
+     * @param stringLiteral string token
+     */
     public ExprNode(Token stringLiteral) {
         this.stringLiteral = stringLiteral;
     }
 
+
+    /**
+     * Constructor for Expr Node that takes in boolean node
+     * @param boolNode boolean node
+     */
     public ExprNode(BoolNode boolNode) {
         this.boolNode = boolNode;
     }
 
+    /**
+     * Constructor for Expr Node that takes in operand node
+     * @param operand operand node
+     */
     public ExprNode(OperandNode operand) {
         this.leftOperand = operand;
     }
 
+    /**
+     * Constructor for Expr Node that takes in left operand node, operator token, and right
+     * operand node
+     * @param leftOperand
+     * @param operator
+     * @param rightOperand
+     */
     public ExprNode(OperandNode leftOperand, Token operator, OperandNode rightOperand) {
         this.leftOperand = leftOperand;
         this.operator = operator;
