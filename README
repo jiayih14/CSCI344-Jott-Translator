@@ -1,4 +1,5 @@
-Authors: Teju Rajbabu, Jiayi Huang
+Authors: Teju Rajbabu, Kifekachukwu Nwosu, Alvin Jiang, Jiayi Huang, Matthew Gleich
+
 
 Phase 1 implements the Jott Tokenizer, responsible for converting a .jott source file into a sequence of tokens based
 on the DFA provided in the project specification. The tokenizer was fully completed, compiled, and tested by all group members.
