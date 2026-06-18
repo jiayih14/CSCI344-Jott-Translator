@@ -1,7 +1,16 @@
 package Nodes;
 
 import provided.JottTree;
-
+/**
+ * @author Kifekachukwu Nwosu
+ *
+ * Represents a single statement inside a function body.
+ *
+ * <body_stmt> -> <if_stmt>
+ *              | <while_loop>
+ *              | <asmt>
+ *              | <func_call>;
+ */
 public class BodyStmtNode implements JottTree {
 
     public BodyStmtNode(){

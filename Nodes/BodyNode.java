@@ -7,7 +7,6 @@ import java.util.ArrayList;
  * @author Kifekachukwu Nwosu
  * This class represents the body of a function, which consists of a list of statements and an optional return statement.
  * The body of a function is defined in the Jott grammar as follows:
- * <body> -> <body_stmt> <body> | <return_stmt>
  */
 public class BodyNode implements JottTree {
 
