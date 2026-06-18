@@ -1,3 +1,18 @@
+/**
+ * File name: ExprNode.java
+ * Author: Alvin Jiang
+ *
+ * This file defines the ExprNode class, which represents an expression
+ *  in the Jott parse tree shown the following:
+ *
+ *  <expr> -> <operand> | <operand> <relop> <operand> |
+ * <operand> <mathop> <operand> | <string_literal> |
+ * <bool>
+ *
+ * The class provides functionality to parse expression statement based on the provided grammar.
+ * It also allows conversion to Jott, Java, C and Python
+ */
+
 package Nodes;
 
 import provided.JottTree;

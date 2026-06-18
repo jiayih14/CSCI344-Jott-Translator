@@ -1,3 +1,16 @@
+/**
+ * File name: BoolNode.java
+ * Author: Alvin Jiang
+ *
+ * This file defines the BoolNode class, which represents a boolean variable
+ *  in the Jott parse tree shown the following:
+ *
+ *  <bool> -> True | False
+ *
+ * The class provides functionality to parse boolean variable based on the provided grammar.
+ * It also allows conversion to Jott, Java, C and Python
+ */
+
 package Nodes;
 
 import provided.JottTree;

@@ -1,3 +1,16 @@
+/**
+ * File name: TypeNode.java
+ * Author: Alvin Jiang
+ *
+ * This file defines the TypeNode class, which represents a grammar for type declaration
+ * in the Jott parse tree shown the following:
+ *
+ * Double | Integer | String | Boolean
+ *
+ * The class provides functionality to parse type declaration based on the provided grammar.
+ * It also allows conversion to Jott, Java, C and Python
+ */
+
 package Nodes;
 
 import provided.JottTree;

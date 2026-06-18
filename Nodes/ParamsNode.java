@@ -1,3 +1,16 @@
+/**
+ * File name: ParamsNode.java
+ * Author: Alvin Jiang
+ *
+ * This file defines the ParamsNode class, which represents a grammar for parameter declaration
+ * in the Jott parse tree shown the following:
+ *
+ *  <params> -> <expr> <params_t>* | e
+ *
+ * The class provides functionality to parse a parameter declaration statement based on the provided grammar.
+ * It also allows conversion to Jott, Java, C and Python
+ */
+
 package Nodes;
 
 import provided.JottTree;

@@ -1,3 +1,16 @@
+/**
+ * File name: AsmtNode.java
+ * Author: Alvin Jiang
+ *
+ * This file defines the AsmtNode class, which represents an assignment
+ * statement in the Jott parse tree shown the following:
+ *
+ * <id>=< expr>
+ *
+ * The class provides functionality to parse assignment statements based on the provided grammar.
+ * It also allows conversion to Jott, Java, C and Python
+ */
+
 package Nodes;
 
 import provided.JottTree;
@@ -5,6 +18,7 @@ import provided.Token;
 import provided.TokenType;
 
 import java.util.ArrayList;
+
 
 public class AsmtNode implements JottTree {
 

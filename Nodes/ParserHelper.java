@@ -1,3 +1,11 @@
+/**
+ * File name: ParseHelper.java
+ * Author: Alvin Jiang
+ *
+ * This file defines the ParseHelper class, which provide methods like peek, checkType, checkValue, expect
+ * , expectValue, and error function for reusability of other parse function.
+ */
+
 package Nodes;
 
 import provided.Token;

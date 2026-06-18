@@ -1,3 +1,16 @@
+/**
+ * File name: ReturnStmtNode.java
+ * Author: Jiayi Huang
+ *
+ * This file defines the ReturnStmtNode class, which represents a grammar for return statement
+ * in the Jott parse tree shown the following:
+ *
+ *  Return <expr>; | e
+ *
+ * The class provides functionality to parse the return statement of a function based on the provided grammar.
+ * It also allows conversion to Jott, Java, C and Python
+ */
+
 package Nodes;
 
 import provided.JottTree;

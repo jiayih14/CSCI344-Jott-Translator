@@ -1,3 +1,16 @@
+/**
+ * File name: OperandNode.java
+ * Author: Alvin Jiang
+ *
+ * This file defines the OperandNode class, which represents a grammar for operand statement or function call
+ * in the Jott parse tree shown the following:
+ *
+ *  <operand> -> <id> | <num> | <func_call> | -<num>
+ *
+ * The class provides functionality to parse a parameter declaration statement based on the provided grammar.
+ * It also allows conversion to Jott, Java, C and Python
+ */
+
 package Nodes;
 
 import provided.JottTree;

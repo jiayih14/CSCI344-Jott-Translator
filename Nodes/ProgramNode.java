@@ -1,3 +1,16 @@
+/**
+ * File name: ProgramNode.java
+ * Author: Jiayi Huang
+ *
+ * This file defines the ProgramNode class, which represents a grammar for start of the program
+ * in the Jott parse tree shown the following:
+ *
+ *  <function_def>*<EOF>
+ *
+ * The class provides functionality to parse the start of program based on the provided grammar.
+ * It also allows conversion to Jott, Java, C and Python
+ */
+
 package Nodes;
 
 import provided.JottTree;

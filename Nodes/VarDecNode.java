@@ -1,3 +1,16 @@
+/**
+ * File name: VarDecNode.java
+ * Author: Jiayi Huang
+ *
+ * This file defines the VarDecNode class, which represents a grammar for variable declaration
+ * in the Jott parse tree shown the following:
+ *
+ *  <type> <id>;
+ *
+ * The class provides functionality to parse variable declaration based on the provided grammar.
+ * It also allows conversion to Jott, Java, C and Python
+ */
+
 package Nodes;
 
 import provided.JottTree;
