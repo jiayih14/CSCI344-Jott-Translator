@@ -4,6 +4,10 @@ Authors: Teju Rajbabu, Kifekachukwu Nwosu, Alvin Jiang, Jiayi Huang, Matthew Gle
 Phase 1 implements the Jott Tokenizer, responsible for converting a .jott source file into a sequence of tokens based
 on the DFA provided in the project specification. The tokenizer was fully completed, compiled, and tested by all group members.
 
+Phase 2 implements the Jott Parser. This takes in a list of tokens and verify the syntax layer of Jott.
+The Parser was fully completed, compiled, and tested by all group members.
+
+
 This project requires JDK 18 or higher to compile and run. This should be checked before compilation with
 	java -version and javac -version. Environment variables should also include the path to the JDK bin directory.
 
@@ -25,4 +29,10 @@ The testCases directory should be located in the project's working directory.
 Phase 1: All test cases ran successfully with 12/12 passed.
 Project tested with other samples in own environments and confirmed by individual contributors.
 Project was tested on cs servers and is confirmed to run successfully with no errors.
+
+
+Phase 2: All test cases ran successfully with 30/30 passed.
+Project was tested on cs servers and is confirmed to run successfully with no errors.
+
+
 No external libraries were used in the project.
