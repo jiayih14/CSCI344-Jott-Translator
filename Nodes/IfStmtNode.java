@@ -49,36 +49,34 @@ public class IfStmtNode implements JottTree {
             // "{"
             ParserHelper.expectValue(tokens, "{", "Expected '{' to start If body");
 
-            // parse body statements
-            ArrayList<BodyStmtNode> stmts = new ArrayList<>();
-            while (BodyStmtNode.startsBodyStmt(tokens)) {
-                stmts.add(BodyStmtNode.parse(tokens));
-            }
+            // parse body
+            BodyNode body = BodyNode.parse(tokens);
 
             // optional return
-            ReturnStmtNode ret = null;
-            if (tokens.get(0).getToken().equals("Return")) {
-                ret = ReturnStmtNode.parse(tokens);
-            }
+//            ReturnStmtNode ret = null;
+//            if (tokens.get(0).getToken().equals("Return")) {
+//                ret = ReturnStmtNode.parse(tokens);
+//            }
 
             // "}"
             ParserHelper.expectValue(tokens, "}", "Expected '}' to end If body");
 
-            BodyNode ifBody = new BodyNode(stmts, ret);
+//            BodyNode ifBody = new BodyNode(stmts, ret);
 
             // parse ElseIf blocks
             ArrayList<ElseIfNode> elseIfs = new ArrayList<>();
-            while (ElseIfNode.startsElseIf(tokens)) {
+            while (ParserHelper.checkValue(tokens, "Elseif")) {
                 elseIfs.add(ElseIfNode.parse(tokens));
             }
 
             // parse optional Else block
-            ElseNode elseNode = null;
-            if (ElseNode.startsElse(tokens)) {
-                elseNode = ElseNode.parse(tokens);
-            }
+//            ElseNode elseNode = null;
+//            if (ElseNode.startsElse(tokens)) {
+//                elseNode = ElseNode.parse(tokens);
+//            }
+            ElseNode elseNode = ElseNode.parse(tokens);
 
-            return new IfStmtNode(cond, ifBody, elseIfs, elseNode);
+            return new IfStmtNode(cond, body, elseIfs, elseNode);
         }
 
 
