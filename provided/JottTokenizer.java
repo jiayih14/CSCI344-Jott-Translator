@@ -260,7 +260,7 @@ public class JottTokenizer {
 			else if (ch == '.'){
 				if (
 						!dotPresent
-						&& (!number.isEmpty() || (index + 1 < line.length() && Character.isDigit(line.charAt(index+1))))){
+						&& (number.length() > 0 || (index + 1 < line.length() && Character.isDigit(line.charAt(index+1))))){
 					number.append(ch);
 					dotPresent = true;
 					index++;
