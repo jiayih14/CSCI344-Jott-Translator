@@ -7,7 +7,7 @@ import provided.TokenType;
 import java.util.ArrayList;
 
 /**
- * @author Kifekachukwu Nwosu
+ * @author Kifekachukwu Nwosu, Jiayi Huang
  *
  * Represents a single statement inside a function body.
  *

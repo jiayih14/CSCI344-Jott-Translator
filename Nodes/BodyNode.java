@@ -6,7 +6,7 @@ import provided.Token;
 import javax.swing.text.html.parser.Parser;
 import java.util.ArrayList;
 /***
- * @author Kifekachukwu Nwosu
+ * @author Kifekachukwu Nwosu, Jiayi Huang
  * This class represents the body of a function, which consists of a list of statements and an optional return statement.
  * The body of a function is defined in the Jott grammar as follows:
  */

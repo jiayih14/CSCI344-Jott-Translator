@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 /**
  * File name: IfStmtNode.java
- * Author: Teju Rajbabu
+ * Author: Teju Rajbabu, Jiayi Huang
  *
  * This file defines the IfStmtNode class, which represents the grammar:
  *

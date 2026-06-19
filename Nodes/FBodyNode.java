@@ -4,7 +4,17 @@ import provided.JottTree;
 import provided.Token;
 
 import java.util.ArrayList;
-
+/**
+ * File name: FBodyNode.java
+ * Author: Teju Rajbabu, Jiayi Huang
+ *
+ * This file defines the FBodyNode class, which represents the grammar:
+ *
+ * < f_body > -> < var_dec >* < body >
+ *
+ * The class provides functionality to parse a func body based on the grammar.
+ * It also allows conversion back to Jott.
+ */
 public class FBodyNode implements JottTree {
 
     ArrayList<VarDecNode> varDec;
