@@ -1,6 +1,7 @@
 package Nodes;
 
 import provided.JottTree;
+import provided.Token;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,10 @@ public class FBodyNode implements JottTree {
     public FBodyNode(ArrayList<VarDecNode> varDec, ReturnStmtNode returnStmt){
         this.varDec = varDec;
         this.returnStmt = returnStmt;
+    }
+
+    public static FBodyNode parse(ArrayList<Token> tokens){
+        return null;
     }
 
     @Override
