@@ -1,10 +1,12 @@
 package Nodes;
 
 import provided.JottTree;
+import provided.Token;
 
+import javax.swing.text.html.parser.Parser;
 import java.util.ArrayList;
 /***
- * @author Kifekachukwu Nwosu
+ * @author Kifekachukwu Nwosu, Jiayi Huang
  * This class represents the body of a function, which consists of a list of statements and an optional return statement.
  * The body of a function is defined in the Jott grammar as follows:
  */
@@ -19,21 +21,37 @@ public class BodyNode implements JottTree {
         this.returnStmtNode = returnStmtNode;
     }
 
-@Override
-public String convertToJott() {
+    public static BodyNode parse(ArrayList<Token> tokens){
+        ArrayList<BodyStmtNode> bodystmts = new ArrayList<>();
+        while(!ParserHelper.checkValue(tokens, "Return") && !ParserHelper.checkValue(tokens, "}")){
+            BodyStmtNode bodystmtNode = BodyStmtNode.parse(tokens);
+            bodystmts.add(bodystmtNode);
+        }
 
-    StringBuilder sb = new StringBuilder();
+        if (ParserHelper.checkValue(tokens, "Return")){
+            ReturnStmtNode returnStmtNode = ReturnStmtNode.parse(tokens);
+            return new BodyNode(bodystmts, returnStmtNode);
+        }
 
-    for (BodyStmtNode stmt : bodyStmtNodeList) {
-        sb.append(stmt.convertToJott());
+        return new BodyNode(bodystmts, null);
     }
 
-    if (returnStmtNode != null) {
-        sb.append(returnStmtNode.convertToJott());
-    }
 
-    return sb.toString();
-}
+    @Override
+    public String convertToJott() {
+
+        StringBuilder sb = new StringBuilder();
+
+        for (BodyStmtNode stmt : bodyStmtNodeList) {
+            sb.append(stmt.convertToJott());
+        }
+
+        if (returnStmtNode != null) {
+            sb.append(returnStmtNode.convertToJott());
+        }
+
+        return sb.toString();
+    }
     @Override
     public String convertToJava(String className){
         return null;

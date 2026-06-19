@@ -1,8 +1,13 @@
 package Nodes;
 
 import provided.JottTree;
+import provided.Token;
+import provided.TokenType;
+
+import java.util.ArrayList;
+
 /**
- * @author Kifekachukwu Nwosu
+ * @author Kifekachukwu Nwosu, Jiayi Huang
  *
  * Represents a single statement inside a function body.
  *
@@ -35,6 +40,30 @@ public class BodyStmtNode implements JottTree {
     }
 
 
+    public static BodyStmtNode parse(ArrayList<Token> tokens){
+        if(ParserHelper.checkValue(tokens, "If")){
+            IfStmtNode ifNode = IfStmtNode.parse(tokens);
+            return new BodyStmtNode(ifNode);
+        }
+        else if(ParserHelper.checkValue(tokens, "While")){
+            WhileNode whileNode = WhileNode.parse(tokens);
+            return new BodyStmtNode(whileNode);
+        }
+        else if(ParserHelper.checkValue(tokens, "::")){
+            FuncCallNode funcCallNode = FuncCallNode.parse(tokens);
+            BodyStmtNode bodyStmtNode = new BodyStmtNode(funcCallNode);
+            ParserHelper.expectValue(tokens, ";", "Expecting \";\" after function call");
+            return bodyStmtNode;
+        }
+        else if(ParserHelper.checkType(tokens, TokenType.ID_KEYWORD)){
+            AsmtNode asmtNode = AsmtNode.parse(tokens);
+            return new BodyStmtNode(asmtNode);
+        }
+        else{
+            throw ParserHelper.error(tokens, "Expect function call or if statement or while statement or Identifier");
+        }
+
+    }
     @Override
     public String convertToJott() {
 
