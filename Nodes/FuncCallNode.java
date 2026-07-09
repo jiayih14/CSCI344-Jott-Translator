@@ -63,6 +63,9 @@ public class FuncCallNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return false;
+        return this.funcName != null
+                && this.funcName.getTokenType().equals(TokenType.ID_KEYWORD)
+                && this.params != null
+                && this.params.validateTree();
     }
 }
