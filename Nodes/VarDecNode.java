@@ -67,9 +67,17 @@ public class VarDecNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return this.typeNode != null
-                && this.typeNode.validateTree()
-                && this.id != null
-                && this.id.getTokenType().equals(TokenType.ID_KEYWORD);
+        if (!this.typeNode.validateTree()) {
+            return false;
+        }
+
+        if (!SemanticAnalyzer.declareVariable( this.id.getToken(), this.typeNode.getType())) {
+            System.err.println("Semantic Error:");
+            System.err.println("Variable " + id.getToken() + " already declared.");
+            System.err.println(id.getFilename() + ":" + id.getLineNum());
+            return false;
+        }
+
+        return true;
     }
 }

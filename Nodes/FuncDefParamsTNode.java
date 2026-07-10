@@ -67,4 +67,8 @@ public class FuncDefParamsTNode implements JottTree {
                 && this.type != null
                 && this.type.validateTree();
     }
+
+    public String getType(){
+        return this.type.getType();
+    }
 }

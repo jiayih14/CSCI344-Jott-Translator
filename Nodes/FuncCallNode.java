@@ -63,9 +63,58 @@ public class FuncCallNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return this.funcName != null
-                && this.funcName.getTokenType().equals(TokenType.ID_KEYWORD)
-                && this.params != null
-                && this.params.validateTree();
+
+        // Validate argument expressions
+        if (!this.params.validateTree()) {
+            return false;
+        }
+
+        // Does the function exist?
+        FunctionInfo function = SemanticAnalyzer.lookupFunction(funcName.getToken());
+
+
+        if (function == null) {
+            System.err.println("Call to unknown function " + this.funcName.getToken());
+            return false;
+        }
+
+        // Check number of parameters
+        int numOfParam = 0;
+        if (this.params.getFirstParam() != null){
+            numOfParam = 1 + this.params.getAdditionalParams().size();
+        }
+        if (numOfParam != function.getParameterTypes().size()) {
+
+            System.err.println("Function " + this.funcName.getToken() + " expects "
+                            + function.getParameterTypes().size()
+                            + " parameter(s)."
+                    );
+
+            return false;
+        }
+
+        // Check each parameter type
+        for (int i = 0; i < numOfParam; i++) {
+
+            String expected = function.getParameterTypes().get(i);
+
+            String actual;
+
+            if (i == 0) {
+                actual = params.getFirstParam().getType();
+            } else {
+                actual = params.getAdditionalParams().get(i - 1).getType();
+            }
+
+            if (!expected.equals(actual)) {
+                System.err.println("Invalid parameter type in call to " + funcName.getToken());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public String getType(){
+        return SemanticAnalyzer.lookupFunction(funcName.getToken()).getReturnType();
     }
 }

@@ -91,4 +91,12 @@ public class ParamsNode implements JottTree {
         return true;
     }
 
+    public ExprNode getFirstParam() {
+        return firstParam;
+    }
+
+    public ArrayList<ParamsTNode> getAdditionalParams(){
+        return this.additionalParams;
+    }
+
 }
