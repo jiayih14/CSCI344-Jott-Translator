@@ -1,6 +1,6 @@
 /**
  * File name: OperandNode.java
- * Author: Alvin Jiang
+ * Author: Alvin Jiang and Teju Rajbabu
  *
  * This file defines the OperandNode class, which represents a grammar for operand statement or function call
  * in the Jott parse tree shown the following:
@@ -88,6 +88,10 @@ public class OperandNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return false;
+        if (funcCall != null) {
+            return funcCall.validateTree();
+        }
+        return idOrNum != null;
     }
+
 }
