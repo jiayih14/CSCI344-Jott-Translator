@@ -1,6 +1,6 @@
 /**
  * File name: ParamsNode.java
- * Author: Alvin Jiang
+ * Author: Alvin Jiang and Teju Rajbabu
  *
  * This file defines the ParamsNode class, which represents a grammar for parameter declaration
  * in the Jott parse tree shown the following:
@@ -77,7 +77,18 @@ public class ParamsNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return false;
+        if (firstParam == null) {
+            return true;
+        }
+        if (!firstParam.validateTree()) {
+            return false;
+        }
+        for (ParamsTNode p : additionalParams) {
+            if (!p.validateTree()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public ExprNode getFirstParam() {
@@ -87,4 +98,5 @@ public class ParamsNode implements JottTree {
     public ArrayList<ParamsTNode> getAdditionalParams(){
         return this.additionalParams;
     }
+
 }

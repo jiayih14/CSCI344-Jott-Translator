@@ -19,10 +19,10 @@ import java.util.ArrayList;
 
 public class WhileNode implements JottTree {
 
-    private JottTree condition;
+    private ExprNode condition;
     private BodyNode body;
 
-    public WhileNode(JottTree condition, BodyNode body) {
+    public WhileNode(ExprNode condition, BodyNode body) {
         this.condition = condition;
         this.body = body;
     }
@@ -31,7 +31,7 @@ public class WhileNode implements JottTree {
         ParserHelper.expectValue(tokens, "While", "Expected 'While'");
 
         ParserHelper.expectValue(tokens, "[", "Expected '[' after While");
-        JottTree condition = ExprNode.parse(tokens);
+        ExprNode condition = ExprNode.parse(tokens);
         ParserHelper.expectValue(tokens, "]", "Expected ']' after while condition");
 
         ParserHelper.expectValue(tokens, "{", "Expected '{' to start while body");
@@ -61,8 +61,22 @@ public class WhileNode implements JottTree {
         return null;
     }
 
+    public boolean guaranteesReturn() {
+        return false; // spec: a while loop never guarantees a function return
+    }
+
     @Override
     public boolean validateTree() {
-        return false;
+        if (condition == null) {
+            return false;
+        }
+        if (!condition.validateTree()) {
+            return false;
+        }
+        // Requires semantic type information from ExprNode.
+        if (body == null) {
+            return false;
+        }
+        return body.validateTree();
     }
 }

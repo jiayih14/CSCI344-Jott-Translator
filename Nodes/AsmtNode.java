@@ -1,6 +1,6 @@
 /**
  * File name: AsmtNode.java
- * Author: Alvin Jiang
+ * Author: Alvin Jiang and Teju Rajbabu
  *
  * This file defines the AsmtNode class, which represents an assignment
  * statement in the Jott parse tree shown the following:
@@ -63,6 +63,9 @@ public class AsmtNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return false;
+        return this.id != null
+            && this.expr != null
+            && this.expr.validateTree();
     }
+
 }

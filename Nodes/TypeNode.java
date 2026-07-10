@@ -70,6 +70,13 @@ public class TypeNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return false;
+        if (typeToken == null) {
+            return false;
+        }
+        String val = typeToken.getToken();
+        return "Integer".equals(val)
+                || "Double".equals(val)
+                || "String".equals(val)
+                || "Boolean".equals(val);
     }
 }

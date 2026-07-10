@@ -18,10 +18,10 @@ import java.util.ArrayList;
 
 public class ElseIfNode implements JottTree {
 
-    private JottTree condition;
+    private ExprNode condition;
     private BodyNode body;
 
-    public ElseIfNode(JottTree condition, BodyNode body) {
+    public ElseIfNode(ExprNode condition, BodyNode body) {
         this.condition = condition;
         this.body = body;
     }
@@ -30,7 +30,7 @@ public class ElseIfNode implements JottTree {
         ParserHelper.expectValue(tokens, "Elseif", "Expected 'Elseif'");
 
         ParserHelper.expectValue(tokens, "[", "Expected '[' after Elseif");
-        JottTree condition = ExprNode.parse(tokens);
+        ExprNode condition = ExprNode.parse(tokens);
         ParserHelper.expectValue(tokens, "]", "Expected ']' after elseif condition");
 
         ParserHelper.expectValue(tokens, "{", "Expected '{' to start elseif body");
@@ -62,6 +62,16 @@ public class ElseIfNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return false;
+        if (condition == null) {
+            return false;
+        }
+        if (!condition.validateTree()) {
+            return false;
+        }
+        // Requires semantic type information from ExprNode.
+        if (body == null) {
+            return false;
+        }
+        return body.validateTree();
     }
 }
