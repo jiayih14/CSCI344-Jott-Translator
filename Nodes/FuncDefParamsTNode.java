@@ -62,10 +62,19 @@ public class FuncDefParamsTNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return this.id != null
-                && this.id.getTokenType().equals(TokenType.ID_KEYWORD)
-                && this.type != null
-                && this.type.validateTree();
+        if (type == null || !type.validateTree()) {
+            return false;
+        }
+
+        if (!SemanticAnalyzer.declareVariable(id.getToken(), type.getType())) {
+            System.err.println("Semantic Error:");
+            System.err.println("Duplicate parameter " + id.getToken());
+            System.err.println(id.getFilename() + ":" + id.getLineNum());
+            return false;
+        }
+        SemanticAnalyzer.lookupVariable(id.getToken()).setInitialized(true);
+
+        return true;
     }
 
     public String getType(){
