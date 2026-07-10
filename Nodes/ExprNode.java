@@ -1,6 +1,6 @@
 /**
  * File name: ExprNode.java
- * Author: Alvin Jiang and Teju Rajbabu
+ * Author: Alvin Jiang
  *
  * This file defines the ExprNode class, which represents an expression
  *  in the Jott parse tree shown the following:
@@ -116,13 +116,6 @@ public class ExprNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        if (boolNode != null) return boolNode.validateTree();
-        if (stringNode != null) return true; 
-        if (operand1 != null && operand2 == null) return operand1.validateTree();
-        if (operand1 != null && operand2 != null) {
-            return operand1.validateTree() && operand2.validateTree();
-        }
         return false;
     }
-
 }
