@@ -19,13 +19,15 @@ import java.util.ArrayList;
 
 public class IfStmtNode implements JottTree {
 
+    private Token keyword;
     private ExprNode condition;
     private BodyNode ifBody;
     private ArrayList<ElseIfNode> elseIfList;
     private ElseNode elseNode;
 
-    public IfStmtNode(ExprNode condition, BodyNode ifBody, 
+    public IfStmtNode(Token keyword, ExprNode condition, BodyNode ifBody,
         ArrayList<ElseIfNode> elseIfList, ElseNode elseNode) {
+            this.keyword = keyword;
             this.condition = condition;
             this.ifBody = ifBody;
             this.elseIfList = (elseIfList != null) ? elseIfList : new ArrayList<>();
@@ -34,7 +36,7 @@ public class IfStmtNode implements JottTree {
         public static IfStmtNode parse(ArrayList<Token> tokens) {
 
             // "If"
-            ParserHelper.expectValue(tokens, "If", "Expected 'If'");
+            Token keyword = ParserHelper.expectValue(tokens, "If", "Expected 'If'");
 
             // "["
             ParserHelper.expectValue(tokens, "[", "Expected '[' after If");
@@ -62,7 +64,7 @@ public class IfStmtNode implements JottTree {
 
             ElseNode elseNode = ElseNode.parse(tokens);
 
-            return new IfStmtNode(cond, body, elseIfs, elseNode);
+            return new IfStmtNode(keyword, cond, body, elseIfs, elseNode);
         }
 
 
@@ -111,7 +113,12 @@ public class IfStmtNode implements JottTree {
         if (!condition.validateTree()) {
             return false;
         }
-        // Requires semantic type information from ExprNode.
+        if (!"Boolean".equals(condition.getType())) {
+            System.err.println("Semantic Error:");
+            System.err.println("If condition must evaluate to Boolean");
+            System.err.println(keyword.getFilename() + ":" + keyword.getLineNum());
+            return false;
+        }
         if (ifBody == null) {
             return false;
         }

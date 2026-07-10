@@ -18,16 +18,18 @@ import java.util.ArrayList;
 
 public class ElseIfNode implements JottTree {
 
+    private Token keyword;
     private ExprNode condition;
     private BodyNode body;
 
-    public ElseIfNode(ExprNode condition, BodyNode body) {
+    public ElseIfNode(Token keyword, ExprNode condition, BodyNode body) {
+        this.keyword = keyword;
         this.condition = condition;
         this.body = body;
     }
 
     public static ElseIfNode parse(ArrayList<Token> tokens) {
-        ParserHelper.expectValue(tokens, "Elseif", "Expected 'Elseif'");
+        Token keyword = ParserHelper.expectValue(tokens, "Elseif", "Expected 'Elseif'");
 
         ParserHelper.expectValue(tokens, "[", "Expected '[' after Elseif");
         ExprNode condition = ExprNode.parse(tokens);
@@ -37,7 +39,7 @@ public class ElseIfNode implements JottTree {
         BodyNode body = BodyNode.parse(tokens);
         ParserHelper.expectValue(tokens, "}", "Expected '}' to close elseif body");
 
-        return new ElseIfNode(condition, body);
+        return new ElseIfNode(keyword, condition, body);
     }
 
     @Override
@@ -68,7 +70,12 @@ public class ElseIfNode implements JottTree {
         if (!condition.validateTree()) {
             return false;
         }
-        // Requires semantic type information from ExprNode.
+        if (!"Boolean".equals(condition.getType())) {
+            System.err.println("Semantic Error:");
+            System.err.println("Elseif condition must evaluate to Boolean");
+            System.err.println(keyword.getFilename() + ":" + keyword.getLineNum());
+            return false;
+        }
         if (body == null) {
             return false;
         }

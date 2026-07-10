@@ -19,16 +19,18 @@ import java.util.ArrayList;
 
 public class WhileNode implements JottTree {
 
+    private Token keyword;
     private ExprNode condition;
     private BodyNode body;
 
-    public WhileNode(ExprNode condition, BodyNode body) {
+    public WhileNode(Token keyword, ExprNode condition, BodyNode body) {
+        this.keyword = keyword;
         this.condition = condition;
         this.body = body;
     }
 
     public static WhileNode parse(ArrayList<Token> tokens) {
-        ParserHelper.expectValue(tokens, "While", "Expected 'While'");
+        Token keyword = ParserHelper.expectValue(tokens, "While", "Expected 'While'");
 
         ParserHelper.expectValue(tokens, "[", "Expected '[' after While");
         ExprNode condition = ExprNode.parse(tokens);
@@ -38,7 +40,7 @@ public class WhileNode implements JottTree {
         BodyNode body = BodyNode.parse(tokens);
         ParserHelper.expectValue(tokens, "}", "Expected '}' to close while body");
 
-        return new WhileNode(condition, body);
+        return new WhileNode(keyword, condition, body);
     }
 
     @Override
@@ -73,7 +75,12 @@ public class WhileNode implements JottTree {
         if (!condition.validateTree()) {
             return false;
         }
-        // Requires semantic type information from ExprNode.
+        if (!"Boolean".equals(condition.getType())) {
+            System.err.println("Semantic Error:");
+            System.err.println("While condition must evaluate to Boolean");
+            System.err.println(keyword.getFilename() + ":" + keyword.getLineNum());
+            return false;
+        }
         if (body == null) {
             return false;
         }
