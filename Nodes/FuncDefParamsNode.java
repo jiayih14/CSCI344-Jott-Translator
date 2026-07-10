@@ -79,6 +79,17 @@ public class FuncDefParamsNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return false;
+        if (id == null) {
+            return true;
+        }
+        if (!id.getTokenType().equals(TokenType.ID_KEYWORD) || type == null || !type.validateTree()) {
+            return false;
+        }
+        for (FuncDefParamsTNode node : rest) {
+            if (!node.validateTree()) {
+                return false;
+            }
+        }
+        return true;
     }
 }
