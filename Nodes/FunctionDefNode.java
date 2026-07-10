@@ -73,4 +73,13 @@ public class FunctionDefNode implements JottTree {
     public boolean validateTree() {
         return false;
     }
+
+    public boolean registerFunction(){
+        FunctionInfo funcInfo = new FunctionInfo(this.funcReturn.getType(), this.funcDefParams.getParameterTypes());
+        if(!SemanticAnalyzer.declareFunction(this.funcName.getToken(), funcInfo)){
+            System.err.println("Function " + this.funcName.getToken() + " already defined.");
+            return false;
+        }
+        return true;
+    }
 }

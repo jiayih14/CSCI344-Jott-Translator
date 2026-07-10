@@ -80,4 +80,11 @@ public class FunctionReturnNode implements JottTree {
             return this.type.validateTree();
         }
     }
+
+    public String getType() {
+        if (this.type == null) {
+            return "Void";
+        }
+        return this.type.getType();
+    }
 }

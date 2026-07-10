@@ -4,10 +4,10 @@ import java.util.*;
 
 public class SemanticAnalyzer {
 
-    // Variables are scoped
-    private static Stack<HashMap<String, VariableInfo>> variableScopes;
+    // symbol table
+    private static Stack<HashMap<String, VariableInfo>> variableScopes; // symbol table
 
-    // Functions are global
+    // Functions table
     private static HashMap<String, FunctionInfo> functions;
 
     // Current function being validated
@@ -52,8 +52,7 @@ public class SemanticAnalyzer {
         return true;
     }
 
-    public static boolean declareFunction(String name,
-                                          FunctionInfo function) {
+    public static boolean declareFunction(String name, FunctionInfo function) {
 
         if(functions.containsKey(name))
             return false;
