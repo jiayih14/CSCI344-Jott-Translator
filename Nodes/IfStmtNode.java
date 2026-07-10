@@ -2,7 +2,6 @@ package Nodes;
 
 import provided.JottTree;
 import provided.Token;
-import provided.JottParser;
 
 import java.util.ArrayList;
 
@@ -29,7 +28,7 @@ public class IfStmtNode implements JottTree {
         ArrayList<ElseIfNode> elseIfList, ElseNode elseNode) {
             this.condition = condition;
             this.ifBody = ifBody;
-            this.elseIfList = (elseIfList != null) ? elseIfList : new ArrayList<>();  //this.elseIfList = elseIfList;
+            this.elseIfList = (elseIfList != null) ? elseIfList : new ArrayList<>();
             this.elseNode = elseNode;
         }
         public static IfStmtNode parse(ArrayList<Token> tokens) {
@@ -52,16 +51,8 @@ public class IfStmtNode implements JottTree {
             // parse body
             BodyNode body = BodyNode.parse(tokens);
 
-            // optional return
-//            ReturnStmtNode ret = null;
-//            if (tokens.get(0).getToken().equals("Return")) {
-//                ret = ReturnStmtNode.parse(tokens);
-//            }
-
             // "}"
             ParserHelper.expectValue(tokens, "}", "Expected '}' to end If body");
-
-//            BodyNode ifBody = new BodyNode(stmts, ret);
 
             // parse ElseIf blocks
             ArrayList<ElseIfNode> elseIfs = new ArrayList<>();
@@ -69,11 +60,6 @@ public class IfStmtNode implements JottTree {
                 elseIfs.add(ElseIfNode.parse(tokens));
             }
 
-            // parse optional Else block
-//            ElseNode elseNode = null;
-//            if (ElseNode.startsElse(tokens)) {
-//                elseNode = ElseNode.parse(tokens);
-//            }
             ElseNode elseNode = ElseNode.parse(tokens);
 
             return new IfStmtNode(cond, body, elseIfs, elseNode);
@@ -119,6 +105,29 @@ public class IfStmtNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return false;
+        if (condition == null) {
+            return false;
+        }
+        if (!condition.validateTree()) {
+            return false;
+        }
+        // Requires semantic type information from ExprNode.
+        if (ifBody == null) {
+            return false;
+        }
+        if (!ifBody.validateTree()) {
+            return false;
+        }
+        for (ElseIfNode e : elseIfList) {
+            if (!e.validateTree()) {
+                return false;
+            }
+        }
+        if (elseNode != null) {
+            if (!elseNode.validateTree()) {
+                return false;
+            }
+        }
+        return true;
     }
 }
