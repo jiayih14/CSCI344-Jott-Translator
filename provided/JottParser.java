@@ -22,12 +22,11 @@ public class JottParser {
      * or null upon an error in parsing.
      */
     public static JottTree parse(ArrayList<Token> tokens) {
-        // this line is commented out because Function Def Node is a stubbed node
-        // when everything is ready, remove return null and uncomment the following line :)
         ProgramNode root;
         try {
             root = ProgramNode.parse(tokens);
         } catch (JottParseException e) {
+            System.out.println(e.getMessage());
             return null;
         }
         return root;

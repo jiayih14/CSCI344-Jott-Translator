@@ -67,6 +67,9 @@ public class VarDecNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return false;
+        return this.typeNode != null
+                && this.typeNode.validateTree()
+                && this.id != null
+                && this.id.getTokenType().equals(TokenType.ID_KEYWORD);
     }
 }
