@@ -1,6 +1,6 @@
 /**
  * File name: AsmtNode.java
- * Author: Alvin Jiang
+ * Author: Alvin Jiang and Teju Rajbabu
  *
  * This file defines the AsmtNode class, which represents an assignment
  * statement in the Jott parse tree shown the following:
@@ -63,6 +63,44 @@ public class AsmtNode implements JottTree {
 
     @Override
     public boolean validateTree() {
+        String varName = id.getToken();
+
+    if (!ParserHelper.symbolTable.containsKey(varName)) {
+        ParserHelper.semanticError(
+            "Variable '" + varName + "' used before declaration."
+        );
         return false;
+    }
+
+    if (!expr.validateTree()) {
+        return false; 
+    }
+
+    String declaredType = ParserHelper.symbolTable.get(varName);
+
+    String exprType = expr.getType();
+    if (exprType == null) {
+        ParserHelper.semanticError(
+            "Expression assigned to '" + varName + "' has no type."
+        );
+        return false;
+    }
+
+    if (exprType.equals("Void")) {
+        ParserHelper.semanticError(
+            "Cannot assign a Void value to variable '" + varName + "'."
+        );
+        return false;
+    }
+
+    if (!declaredType.equals(exprType)) {
+        ParserHelper.semanticError(
+            "Type mismatch: variable '" + varName + "' is '" + declaredType + "' but expression is '" + exprType + "'."
+        );
+        return false;
+    }
+    ParserHelper.initializedVars.add(varName);
+
+    return true;
     }
 }

@@ -1,6 +1,6 @@
 /**
  * File name: BoolNode.java
- * Author: Alvin Jiang
+ * Author: Alvin Jiang and Teju Rajbabu
  *
  * This file defines the BoolNode class, which represents a boolean variable
  *  in the Jott parse tree shown the following:
@@ -62,8 +62,22 @@ public class BoolNode implements JottTree {
         return null;
     }
 
+    public String getType() {
+    return "Boolean";
+    }
+
     @Override
     public boolean validateTree() {
-        return false;
+        String val = boolToken.getToken();
+
+        if (!val.equals("True") && !val.equals("False")) {
+            ParserHelper.semanticError(
+                "Invalid boolean literal: '" + val + "'. Expected 'True' or 'False'."
+            );
+            return false;
+        }
+
+        return true;
     }
+
 }

@@ -1,6 +1,6 @@
 /**
  * File name: OperandNode.java
- * Author: Alvin Jiang
+ * Author: Alvin Jiang and Teju Rajbabu
  *
  * This file defines the OperandNode class, which represents a grammar for operand statement or function call
  * in the Jott parse tree shown the following:
@@ -86,8 +86,68 @@ public class OperandNode implements JottTree {
         return null;
     }
 
+    public String getType() {
+        if (funcCall != null) {
+            return funcCall.getType();
+        }
+
+        if (idOrNum.getType() == TokenType.NUMBER) {
+            String value = idOrNum.getToken();
+            if (value.contains(".")) {
+                return "Double";
+            }
+            return "Integer";
+        }
+
+        if (idOrNum.getType() == TokenType.ID_KEYWORD) {
+            return ParserHelper.symbolTable.get(idOrNum.getToken());
+        }
+
+        return null;
+    }
+
     @Override
     public boolean validateTree() {
+        if (funcCall != null) {
+            if (!funcCall.validateTree()) {
+                return false;
+            }
+
+            String type = funcCall.getType();
+            if (type == null || type.equals("Void")) {
+                ParserHelper.semanticError(
+                    "Function call '" + funcCall.getFuncName() +
+                    "' cannot be used as an operand because it returns Void."
+                );
+                return false;
+            }
+
+            return true;
+        }
+        if (idOrNum.getType() == TokenType.NUMBER) {
+            return true;
+        }
+        if (idOrNum.getType() == TokenType.ID_KEYWORD) {
+            String varName = idOrNum.getToken();
+
+            if (!ParserHelper.symbolTable.containsKey(varName)) {
+                ParserHelper.semanticError(
+                    "Variable '" + varName + "' used before declaration."
+                );
+                return false;
+            }
+
+            if (!ParserHelper.initializedVars.contains(varName)) {
+                ParserHelper.semanticError(
+                    "Variable '" + varName + "' used before initialization."
+                );
+                return false;
+            }
+
+            return true;
+        }
+
+        ParserHelper.semanticError("Invalid operand.");
         return false;
     }
 }

@@ -1,6 +1,6 @@
 /**
  * File name: ExprNode.java
- * Author: Alvin Jiang
+ * Author: Alvin Jiang and Teju Rajbabu
  *
  * This file defines the ExprNode class, which represents an expression
  *  in the Jott parse tree shown the following:
@@ -114,8 +114,93 @@ public class ExprNode implements JottTree {
         return null;
     }
 
+    public String getType() {
+        if (stringLiteral != null) {
+            return "String";
+        }
+
+        if (boolNode != null) {
+            return "Boolean";
+        }
+
+        if (operator == null) {
+            return leftOperand.getType();
+        }
+
+        String leftType = leftOperand.getType();
+        String rightType = rightOperand.getType();
+
+        if (operator.getType() == TokenType.REL_OP) {
+            return "Boolean";
+        }
+
+        if (operator.getType() == TokenType.MATH_OP) {
+            if (leftType.equals("Double") || rightType.equals("Double")) {
+                return "Double";
+            }
+            return "Integer";
+        }
+        return null;
+    }
+
     @Override
     public boolean validateTree() {
+
+        if (stringLiteral != null) {
+            return true;
+        }
+
+        if (boolNode != null) {
+            return boolNode.validateTree();
+        }
+
+        if (operator == null) {
+            return leftOperand.validateTree();
+        }
+
+        if (!leftOperand.validateTree()) {
+            return false;
+        }
+        if (!rightOperand.validateTree()) {
+            return false;
+        }
+
+        String leftType = leftOperand.getType();
+        String rightType = rightOperand.getType();
+
+        if (leftType.equals("Void") || rightType.equals("Void")) {
+            ParserHelper.semanticError(
+                "Void cannot be used inside an expression."
+            );
+            return false;
+        }
+
+        if (operator.getType() == TokenType.REL_OP) {
+            if (!leftType.equals(rightType)) {
+                ParserHelper.semanticError(
+                    "Relational operator '" + operator.getToken() +
+                    "' requires both operands to have the same type."
+                );
+                return false;
+            }
+            return true;
+        }
+
+        if (operator.getType() == TokenType.MATH_OP) {
+            boolean leftNumeric = leftType.equals("Integer") || leftType.equals("Double");
+            boolean rightNumeric = rightType.equals("Integer") || rightType.equals("Double");
+
+            if (!leftNumeric || !rightNumeric) {
+                ParserHelper.semanticError(
+                    "Math operator '" + operator.getToken() +
+                    "' requires numeric operands."
+                );
+                return false;
+            }
+            return true;
+        }
+
+        ParserHelper.semanticError("Invalid operator in expression.");
         return false;
     }
-}
+}   

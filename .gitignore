@@ -4,3 +4,5 @@ out
 
 CSCI344-Jott-Translator.iml
 *.class
+/parserTestCases/parserTestTemp.jott
+/ad
