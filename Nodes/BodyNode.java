@@ -68,6 +68,14 @@ public class BodyNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return false;
+        for (BodyStmtNode stmt : this.bodyStmtNodeList) {
+            if (!stmt.validateTree()) {
+                return false;
+            }
+        }
+        if (this.returnStmtNode != null) {
+            return this.returnStmtNode.validateTree();
+        }
+        return true;
     }
 }

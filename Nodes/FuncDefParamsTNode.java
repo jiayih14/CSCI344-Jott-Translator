@@ -62,6 +62,9 @@ public class FuncDefParamsTNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        return false;
+        return this.id != null
+                && this.id.getTokenType().equals(TokenType.ID_KEYWORD)
+                && this.type != null
+                && this.type.validateTree();
     }
 }
