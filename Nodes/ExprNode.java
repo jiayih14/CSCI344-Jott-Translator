@@ -118,4 +118,51 @@ public class ExprNode implements JottTree {
     public boolean validateTree() {
         return false;
     }
+
+    public String getType() {
+
+        // String literal
+        if (this.stringLiteral != null) {
+            return "String";
+        }
+
+        // Boolean expression
+        if (this.boolNode != null) {
+            return "Boolean";
+        }
+
+        // Single operand
+        if (operator == null) {
+            return leftOperand.getType();
+        }
+
+        String leftType = leftOperand.getType();
+        String rightType = rightOperand.getType();
+
+        // Relational operators (<, >, ==, etc.)
+        if (operator.getTokenType() == TokenType.REL_OP) {
+            return "Boolean";
+        }
+
+        // Mathematical operators
+        if (operator.getTokenType() == TokenType.MATH_OP) {
+
+            // Integer + Integer -> Integer
+            if (leftType.equals("Integer") && rightType.equals("Integer")) {
+                return "Integer";
+            }
+
+            // Anything involving a Double -> Double
+            if ((leftType.equals("Double") && rightType.equals("Double")) ||
+                    (leftType.equals("Integer") && rightType.equals("Double")) ||
+                    (leftType.equals("Double") && rightType.equals("Integer"))) {
+                return "Double";
+            }
+
+            // Invalid math expression
+            return null;
+        }
+
+        return null;
+    }
 }

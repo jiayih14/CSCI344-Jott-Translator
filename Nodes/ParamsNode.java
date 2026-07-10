@@ -79,4 +79,12 @@ public class ParamsNode implements JottTree {
     public boolean validateTree() {
         return false;
     }
+
+    public ExprNode getFirstParam() {
+        return firstParam;
+    }
+
+    public ArrayList<ParamsTNode> getAdditionalParams(){
+        return this.additionalParams;
+    }
 }

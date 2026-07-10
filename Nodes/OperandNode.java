@@ -90,4 +90,39 @@ public class OperandNode implements JottTree {
     public boolean validateTree() {
         return false;
     }
+
+    public String getType() {
+
+        // Function call
+        if (funcCall != null) {
+            return funcCall.getType();
+        }
+
+        // Identifier
+        if (idOrNum.getTokenType() == TokenType.ID_KEYWORD) {
+
+            VariableInfo variable =
+                    SemanticAnalyzer.lookupVariable(idOrNum.getToken());
+
+            if (variable == null) {
+                return null;
+            }
+
+            return variable.getType();
+        }
+
+        // Number
+        if (idOrNum.getTokenType() == TokenType.NUMBER) {
+
+            String number = idOrNum.getToken();
+
+            if (number.contains(".")) {
+                return "Double";
+            }
+
+            return "Integer";
+        }
+
+        return null;
+    }
 }

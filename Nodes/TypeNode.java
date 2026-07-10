@@ -46,6 +46,10 @@ public class TypeNode implements JottTree {
                 || ParserHelper.checkValue(tokens, "Boolean"));
     }
 
+    public String getType(){
+        return this.typeToken.getToken();
+    }
+
     @Override
     public String convertToJott() {
         return typeToken.getToken();

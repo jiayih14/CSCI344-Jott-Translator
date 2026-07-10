@@ -59,4 +59,8 @@ public class ParamsTNode implements JottTree {
     public boolean validateTree() {
         return false;
     }
+
+    public String getType(){
+        return this.expr.getType();
+    }
 }
