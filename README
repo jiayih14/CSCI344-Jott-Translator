@@ -34,5 +34,38 @@ Project was tested on cs servers and is confirmed to run successfully with no er
 Phase 2: All test cases ran successfully with 30/30 passed.
 Project was tested on cs servers and is confirmed to run successfully with no errors.
 
+Phase 3 implements semantic analysis for Jott. 
+The parse tree is validated using validateTree() methods implemented throughout the node classes. 
+Semantic checks include undefined variables/functions, invalid type assignments, incorrect function parameters, missing return statements, uninitialized variables, 
+and other semantic rules specified in the project description. 
+Jott.java was also implemented as the main driver for tokenizing, parsing, and semantic validation.
 
+### How to Run
+
+#### IDE (VS Code/Eclipse)
+
+Run `Jott.java` and provide the following program arguments:
+
+<input.jott> <output_file> <target_language>
+
+Example:
+
+phase3testcases/funcNotDefined.jott output.java Java
+
+#### Terminal
+
+Compile the project:
+
+javac Jott.java Nodes/*.java provided/*.java
+
+Run the compiler:
+
+java Jott <input.jott> <output_file> <target_language>
+
+Example:
+
+java Jott phase3testcases/funcNotDefined.jott output.java Java
+
+Note: During Phase 3, the compiler performs tokenization, parsing, and semantic validation only. 
+The output file and target language arguments are required for compatibility with later phases, but code generation has not yet been implemented.
 No external libraries were used in the project.
