@@ -85,7 +85,8 @@ public class OperandNode implements JottTree {
     public String convertToPython(){
         return null;
     }
-@Override
+
+ @Override
 public boolean validateTree() {
 
     // Function call
@@ -121,10 +122,9 @@ public boolean validateTree() {
     if (idOrNum.getTokenType() == TokenType.NUMBER) {
         return true;
     }
-//
+
     return false;
 }
-
 
     public String getType() {
 
