@@ -21,7 +21,8 @@ import java.util.ArrayList;
 
 public class OperandNode implements JottTree {
 
-a    private boolean negative;
+    private Token idOrNum;
+    private boolean negative;
     private FuncCallNode funcCall;
 
     /**
