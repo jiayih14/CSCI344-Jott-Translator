@@ -62,7 +62,11 @@ public class IfStmtNode implements JottTree {
                 elseIfs.add(ElseIfNode.parse(tokens));
             }
 
-            ElseNode elseNode = ElseNode.parse(tokens);
+            // Else is optional per the grammar: <else> -> Else{<body>} | e
+            ElseNode elseNode = null;
+            if (ParserHelper.checkValue(tokens, "Else")) {
+                elseNode = ElseNode.parse(tokens);
+            }
 
             return new IfStmtNode(keyword, cond, body, elseIfs, elseNode);
         }
@@ -136,5 +140,20 @@ public class IfStmtNode implements JottTree {
             }
         }
         return true;
+    }
+
+    public boolean guaranteesReturn() {
+        if (elseNode == null) {
+            return false;
+        }
+        if (!ifBody.guaranteesReturn()) {
+            return false;
+        }
+        for (ElseIfNode e : elseIfList) {
+            if (!e.guaranteesReturn()) {
+                return false;
+            }
+        }
+        return elseNode.guaranteesReturn();
     }
 }

@@ -90,8 +90,9 @@ public boolean validateTree() {
         SemanticAnalyzer.exitScope();
         return false;
     }
+    // Non-Void functions must have a guaranteed return path
     if (!funcReturn.getType().equals("Void")
-        && !fBody.hasReturnStatement()) {
+        && !fBody.guaranteesReturn()) {
 
     System.err.println("Semantic Error:");
     System.err.println("Missing return for non-Void function "
@@ -102,20 +103,6 @@ public boolean validateTree() {
     SemanticAnalyzer.exitScope();
     return false;
 }
-
-    // Non-Void functions must have a return statement
-    if (!funcReturn.getType().equals("Void")
-            && !fBody.hasReturnStatement()) {
-
-        System.err.println("Semantic Error:");
-        System.err.println("Missing return for non-Void function "
-                + funcName.getToken());
-        System.err.println(funcName.getFilename() + ":"
-                + funcName.getLineNum());
-
-        SemanticAnalyzer.exitScope();
-        return false;
-    }
 
     SemanticAnalyzer.exitScope();
     return true;
