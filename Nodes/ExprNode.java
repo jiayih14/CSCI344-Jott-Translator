@@ -116,16 +116,76 @@ public class ExprNode implements JottTree {
 
     @Override
     public boolean validateTree() {
-        // Jiayi: commented this bc it gave error
+        // String literal
+        if (stringLiteral != null) {
+            return true;
+        }
 
-//        if (boolNode != null) return boolNode.validateTree();
-//        if (stringNode != null) return true;
-//        if (operand1 != null && operand2 == null) return operand1.validateTree();
-//        if (operand1 != null && operand2 != null) {
-//            return operand1.validateTree() && operand2.validateTree();
-//        }
+        //  Bool literal
+        if (boolNode != null) {
+            return boolNode.validateTree();
+        }
+
+        // Single operand
+        if (operator == null) {
+            if (leftOperand == null) {
+                return false;
+            }
+            return leftOperand.validateTree();
+        }
+
+        // Operator expression 
+        if (leftOperand == null || rightOperand == null) {
+            return false;
+        }
+        if (!leftOperand.validateTree() || !rightOperand.validateTree()) {
+            return false;
+        }
+
+        String leftType = leftOperand.getType();
+        String rightType = rightOperand.getType();
+
+        // either type = null, semantic error
+        if (leftType == null || rightType == null) {
+            System.err.println("Semantic Error:");
+            System.err.println("Invalid operand type in expression");
+            return false;
+        }
+
+        // both must match
+        if (operator.getTokenType() == TokenType.REL_OP) {
+            if (!leftType.equals(rightType)) {
+                System.err.println("Semantic Error:");
+                System.err.println("Relational operator '" + operator.getToken()
+                        + "' requires operands of the same type");
+                System.err.println(operator.getFilename() + ":" + operator.getLineNum());
+                return false;
+            }
+            return true;
+        }
+
+        // Both must be numeric
+        if (operator.getTokenType() == TokenType.MATH_OP) {
+            boolean leftNumeric = leftType.equals("Integer") || leftType.equals("Double");
+            boolean rightNumeric = rightType.equals("Integer") || rightType.equals("Double");
+
+            if (!leftNumeric || !rightNumeric) {
+                System.err.println("Semantic Error:");
+                System.err.println("Math operator '" + operator.getToken()
+                        + "' requires numeric operands");
+                System.err.println(operator.getFilename() + ":" + operator.getLineNum());
+                return false;
+            }
+            return true;
+        }
+
+        // Unknown
+        System.err.println("Semantic Error:");
+        System.err.println("Invalid operator '" + operator.getToken() + "'");
+        System.err.println(operator.getFilename() + ":" + operator.getLineNum());
         return false;
     }
+
 
     public String getType() {
 

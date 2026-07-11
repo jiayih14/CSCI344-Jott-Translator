@@ -77,17 +77,40 @@ public class ParamsNode implements JottTree {
 
     @Override
     public boolean validateTree() {
+
+        // valid if no paramters
         if (firstParam == null) {
             return true;
         }
+
+        // Validate first parameter
         if (!firstParam.validateTree()) {
             return false;
         }
+
+        // Cannot be void
+        if ("Void".equals(firstParam.getType())) {
+            System.err.println("Semantic Error:");
+            System.err.println("Void cannot be used as a function argument");
+            return false;
+        }
+
+        // additional parameters
         for (ParamsTNode p : additionalParams) {
+
             if (!p.validateTree()) {
                 return false;
             }
+
+            // type check additional
+            String type = p.getType();
+            if ("Void".equals(type)) {
+                System.err.println("Semantic Error:");
+                System.err.println("Void cannot be used as a function argument");
+                return false;
+            }
         }
+
         return true;
     }
 

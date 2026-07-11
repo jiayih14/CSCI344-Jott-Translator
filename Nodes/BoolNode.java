@@ -62,6 +62,10 @@ public class BoolNode implements JottTree {
         return null;
     }
 
+    public String getType() {
+        return "Boolean";
+    }
+
     @Override
     public boolean validateTree() {
         return boolToken != null
