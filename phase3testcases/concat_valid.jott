@@ -1,0 +1,5 @@
+Def main[]:Void{
+String s;
+s = ::concat["foo", "bar"];
+::print[s];
+}

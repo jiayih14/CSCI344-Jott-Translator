@@ -92,6 +92,10 @@ public class ParamsNode implements JottTree {
         if ("Void".equals(firstParam.getType())) {
             System.err.println("Semantic Error:");
             System.err.println("Void cannot be used as a function argument");
+            Token firstParamToken = firstParam.getLocationToken();
+            if (firstParamToken != null) {
+                System.err.println(firstParamToken.getFilename() + ":" + firstParamToken.getLineNum());
+            }
             return false;
         }
 
@@ -107,6 +111,10 @@ public class ParamsNode implements JottTree {
             if ("Void".equals(type)) {
                 System.err.println("Semantic Error:");
                 System.err.println("Void cannot be used as a function argument");
+                Token paramToken = p.getLocationToken();
+                if (paramToken != null) {
+                    System.err.println(paramToken.getFilename() + ":" + paramToken.getLineNum());
+                }
                 return false;
             }
         }

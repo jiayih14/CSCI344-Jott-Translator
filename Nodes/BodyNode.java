@@ -81,4 +81,15 @@ public class BodyNode implements JottTree {
     public boolean hasReturnStatement() {
     return returnStmtNode != null;
 }
+
+    public boolean guaranteesReturn() {
+        if (returnStmtNode != null) {
+            return true;
+        }
+        if (bodyStmtNodeList.isEmpty()) {
+            return false;
+        }
+        BodyStmtNode last = bodyStmtNodeList.get(bodyStmtNodeList.size() - 1);
+        return last.guaranteesReturn();
+    }
 }

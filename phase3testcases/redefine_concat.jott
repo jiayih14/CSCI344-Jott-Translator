@@ -1,0 +1,6 @@
+Def concat[x:String]:String{
+Return x;
+}
+Def main[]:Void{
+::print[5];
+}

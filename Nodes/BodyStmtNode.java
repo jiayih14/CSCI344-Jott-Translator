@@ -116,4 +116,14 @@ public class BodyStmtNode implements JottTree {
         }
         return false;
     }
+
+    public boolean guaranteesReturn() {
+        if (ifStmtNode != null) {
+            return ifStmtNode.guaranteesReturn();
+        }
+        if (whileNode != null) {
+            return whileNode.guaranteesReturn();
+        }
+        return false;
+    }
 }

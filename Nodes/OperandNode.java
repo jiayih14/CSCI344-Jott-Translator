@@ -126,6 +126,23 @@ public boolean validateTree() {
     return false;
 }
 
+    public boolean isZeroLiteral() {
+        if (funcCall != null || idOrNum == null) {
+            return false;
+        }
+        if (idOrNum.getTokenType() != TokenType.NUMBER) {
+            return false;
+        }
+        return Double.parseDouble(idOrNum.getToken()) == 0.0;
+    }
+
+    public Token getLocationToken() {
+        if (funcCall != null) {
+            return funcCall.getNameToken();
+        }
+        return idOrNum;
+    }
+
     public String getType() {
 
         // Function call

@@ -22,13 +22,16 @@ import java.util.ArrayList;
 public class ReturnStmtNode implements JottTree {
 
 
+    private Token keyword;
     private ExprNode exprNode;
 
     /**
      * This is a constructor for ReturnStmtNode
+     * @param keyword the "Return" keyword token
      * @param exprNode
      */
-    public ReturnStmtNode(ExprNode exprNode){
+    public ReturnStmtNode(Token keyword, ExprNode exprNode){
+        this.keyword = keyword;
         this.exprNode = exprNode;
     }
 
@@ -38,8 +41,8 @@ public class ReturnStmtNode implements JottTree {
      * @return a ReturnStmtNode if parse successfully.
      */
     public static ReturnStmtNode parse(ArrayList<Token> tokens){
-            ParserHelper.expectValue(tokens, "Return", "Expected a keyword \"Return\"");
-            ReturnStmtNode resultNode = new ReturnStmtNode(ExprNode.parse(tokens));
+            Token keyword = ParserHelper.expectValue(tokens, "Return", "Expected a keyword \"Return\"");
+            ReturnStmtNode resultNode = new ReturnStmtNode(keyword, ExprNode.parse(tokens));
             ParserHelper.expect(tokens, TokenType.SEMICOLON, "Expected ';' to end assignment statement");
             return resultNode;
     }
@@ -74,6 +77,7 @@ public boolean validateTree() {
     if (currentFunction == null) {
         System.err.println("Semantic Error:");
         System.err.println("Return statement outside of a function.");
+        System.err.println(keyword.getFilename() + ":" + keyword.getLineNum());
         return false;
     }
 
@@ -87,6 +91,7 @@ public boolean validateTree() {
     if (!expected.equals(actual)) {
         System.err.println("Semantic Error:");
         System.err.println("Return type does not match function return type.");
+        System.err.println(keyword.getFilename() + ":" + keyword.getLineNum());
         return false;
     }
 

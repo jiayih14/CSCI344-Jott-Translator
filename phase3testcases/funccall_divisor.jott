@@ -1,0 +1,6 @@
+Def zero[]:Integer{
+Return 0;
+}
+Def main[]:Void{
+::print[5/::zero[]];
+}

@@ -1,0 +1,12 @@
+Def countdown[n:Integer]:Void{
+If[n > 0]{
+::print[n];
+::countdown[n-1];
+}
+Else{
+::print[0];
+}
+}
+Def main[]:Void{
+::countdown[3];
+}

@@ -22,6 +22,15 @@ public static void initialize() {
     params.add("Any"); // or whatever your project uses for print's parameter
 
     functions.put("print", new FunctionInfo("Void", params));
+
+    ArrayList<String> concatParams = new ArrayList<>();
+    concatParams.add("String");
+    concatParams.add("String");
+    functions.put("concat", new FunctionInfo("String", concatParams));
+
+    ArrayList<String> lengthParams = new ArrayList<>();
+    lengthParams.add("String");
+    functions.put("length", new FunctionInfo("Integer", lengthParams));
 }
 
     public static void enterScope() {

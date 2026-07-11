@@ -1,0 +1,7 @@
+Def main[]:Void{
+Integer x;
+Integer y;
+x = 5;
+y = 0;
+::print[x/y];
+}

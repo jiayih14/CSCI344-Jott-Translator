@@ -87,6 +87,14 @@ public class FuncDefParamsNode implements JottTree {
             return false;
         }
 
+        String name = id.getToken();
+        if (name == null || name.isEmpty() || !Character.isLowerCase(name.charAt(0))) {
+            System.err.println("Semantic Error:");
+            System.err.println("Parameter " + name + " must start with a lowercase letter.");
+            System.err.println(id.getFilename() + ":" + id.getLineNum());
+            return false;
+        }
+
         if (!SemanticAnalyzer.declareVariable(id.getToken(), type.getType())) {
             System.err.println("Semantic Error:");
             System.err.println("Duplicate parameter " + id.getToken());

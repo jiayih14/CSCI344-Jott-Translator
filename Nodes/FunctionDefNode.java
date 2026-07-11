@@ -90,8 +90,9 @@ public boolean validateTree() {
         SemanticAnalyzer.exitScope();
         return false;
     }
+    // Non-Void functions must have a guaranteed return path
     if (!funcReturn.getType().equals("Void")
-        && !fBody.hasReturnStatement()) {
+        && !fBody.guaranteesReturn()) {
 
     System.err.println("Semantic Error:");
     System.err.println("Missing return for non-Void function "
@@ -103,28 +104,28 @@ public boolean validateTree() {
     return false;
 }
 
-    // Non-Void functions must have a return statement
-    if (!funcReturn.getType().equals("Void")
-            && !fBody.hasReturnStatement()) {
-
-        System.err.println("Semantic Error:");
-        System.err.println("Missing return for non-Void function "
-                + funcName.getToken());
-        System.err.println(funcName.getFilename() + ":"
-                + funcName.getLineNum());
-
-        SemanticAnalyzer.exitScope();
-        return false;
-    }
-
     SemanticAnalyzer.exitScope();
     return true;
 }
 
+    public Token getNameToken() {
+        return funcName;
+    }
+
     public boolean registerFunction(){
+        String name = this.funcName.getToken();
+        if (name == null || name.isEmpty() || !Character.isLowerCase(name.charAt(0))) {
+            System.err.println("Semantic Error:");
+            System.err.println("Function " + name + " must start with a lowercase letter.");
+            System.err.println(this.funcName.getFilename() + ":" + this.funcName.getLineNum());
+            return false;
+        }
+
         FunctionInfo funcInfo = new FunctionInfo(this.funcReturn.getType(), this.funcDefParams.getParameterTypes());
         if(!SemanticAnalyzer.declareFunction(this.funcName.getToken(), funcInfo)){
+            System.err.println("Semantic Error:");
             System.err.println("Function " + this.funcName.getToken() + " already defined.");
+            System.err.println(this.funcName.getFilename() + ":" + this.funcName.getLineNum());
             return false;
         }
         return true;

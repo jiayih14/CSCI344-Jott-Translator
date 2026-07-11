@@ -149,6 +149,7 @@ public class ExprNode implements JottTree {
         if (leftType == null || rightType == null) {
             System.err.println("Semantic Error:");
             System.err.println("Invalid operand type in expression");
+            System.err.println(operator.getFilename() + ":" + operator.getLineNum());
             return false;
         }
 
@@ -176,6 +177,14 @@ public class ExprNode implements JottTree {
                 System.err.println(operator.getFilename() + ":" + operator.getLineNum());
                 return false;
             }
+
+            if (operator.getToken().equals("/") && rightOperand.isZeroLiteral()) {
+                System.err.println("Semantic Error:");
+                System.err.println("Division by zero");
+                System.err.println(operator.getFilename() + ":" + operator.getLineNum());
+                return false;
+            }
+
             return true;
         }
 
@@ -186,6 +195,16 @@ public class ExprNode implements JottTree {
         return false;
     }
 
+
+    public Token getLocationToken() {
+        if (stringLiteral != null) {
+            return stringLiteral;
+        }
+        if (leftOperand != null) {
+            return leftOperand.getLocationToken();
+        }
+        return null;
+    }
 
     public String getType() {
 

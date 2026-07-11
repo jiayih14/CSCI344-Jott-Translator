@@ -1,0 +1,6 @@
+Def Foo[]:Void{
+::print[1];
+}
+Def main[]:Void{
+::Foo[];
+}
