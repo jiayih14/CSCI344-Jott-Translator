@@ -176,6 +176,14 @@ public class ExprNode implements JottTree {
                 System.err.println(operator.getFilename() + ":" + operator.getLineNum());
                 return false;
             }
+
+            if (operator.getToken().equals("/") && rightOperand.isZeroLiteral()) {
+                System.err.println("Semantic Error:");
+                System.err.println("Division by zero");
+                System.err.println(operator.getFilename() + ":" + operator.getLineNum());
+                return false;
+            }
+
             return true;
         }
 
