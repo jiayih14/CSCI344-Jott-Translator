@@ -100,7 +100,7 @@ public class AsmtNode implements JottTree {
             return false;
         }
 
-        SemanticAnalyzer.markInitialized(id.getToken());
+        // SemanticAnalyzer.markInitialized(id.getToken());
 
         return true;
     }

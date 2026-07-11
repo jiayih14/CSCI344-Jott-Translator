@@ -13,11 +13,11 @@ public class SemanticAnalyzer {
     // Current function being validated
     private static FunctionInfo currentFunction;
 
-    public static void initialize() {
-        variableScopes.clear();
-        functions.clear();
-        currentFunction = null;
-    }
+public static void initialize() {
+    variableScopes = new Stack<>();
+    functions = new HashMap<>();
+    currentFunction = null;
+}
 
     public static void enterScope() {
         variableScopes.push(new HashMap<>());

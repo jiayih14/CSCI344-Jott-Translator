@@ -70,24 +70,29 @@ public class ProgramNode implements JottTree {
         return null;
     }
 
-    @Override
-    public boolean validateTree() {
-        SemanticAnalyzer.initialize();
+ @Override
+public boolean validateTree() {
 
-        // First pass: register every function
-        for (FunctionDefNode node : this.functionDefNode) {
+    SemanticAnalyzer.initialize();
+    SemanticAnalyzer.enterScope();
 
-            if(!node.registerFunction()) {
-                return false;
-            }
+    // First pass: register every function
+    for (FunctionDefNode node : this.functionDefNode) {
+        if (!node.registerFunction()) {
+            SemanticAnalyzer.exitScope();
+            return false;
         }
-
-        // Second pass: validate every function
-        for (FunctionDefNode node : this.functionDefNode) {
-            if (!node.validateTree()) {
-                return false;
-            }
-        }
-        return true;
     }
+
+    // Second pass: validate every function
+    for (FunctionDefNode node : this.functionDefNode) {
+        if (!node.validateTree()) {
+            SemanticAnalyzer.exitScope();
+            return false;
+        }
+    }
+
+    SemanticAnalyzer.exitScope();
+    return true;
+}
 }
