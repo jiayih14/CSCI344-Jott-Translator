@@ -61,21 +61,38 @@ public class AsmtNode implements JottTree {
         return null;
     }
 
-  @Override
-  public boolean validateTree() {
-      // Expression must exist
-      if (expr == null) {
-          System.err.println("Semantic Error:");
-          System.err.println("Missing expression in assignment");
-          System.err.println(id.getFilename() + ":" + id.getLineNum());
-          return false;
-      }
-      
-      if (!expr.validateTree()) {
-          return false;
-      }
-      
-      return true;
-  }
+@Override
+public boolean validateTree() {
 
+    VariableInfo variable = SemanticAnalyzer.lookupVariable(id.getToken());
+
+    if (variable == null) {
+        System.err.println("Semantic Error:");
+        System.err.println("Undefined variable " + id.getToken());
+        System.err.println(id.getFilename() + ":" + id.getLineNum());
+        return false;
+    }
+
+    if (!expr.validateTree()) {
+        return false;
+    }
+
+    String expected = variable.getType();
+    String actual = expr.getType();
+
+    if (actual == null) {
+        return false;
+    }
+
+    if (!expected.equals(actual)) {
+        System.err.println("Semantic Error:");
+        System.err.println("Invalid type being assigned into variable " + id.getToken());
+        System.err.println(id.getFilename() + ":" + id.getLineNum());
+        return false;
+    }
+
+    variable.setInitialized(true);
+
+    return true;
+}
 }

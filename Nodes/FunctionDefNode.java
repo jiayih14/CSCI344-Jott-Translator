@@ -69,10 +69,57 @@ public class FunctionDefNode implements JottTree {
         return null;
     }
 
-    @Override
-    public boolean validateTree() {
+@Override
+public boolean validateTree() {
+
+    FunctionInfo function =
+            SemanticAnalyzer.lookupFunction(funcName.getToken());
+
+    SemanticAnalyzer.setCurrentFunction(function);
+
+    SemanticAnalyzer.enterScope();
+
+    // Declare function parameters
+    if (!funcDefParams.validateTree()) {
+        SemanticAnalyzer.exitScope();
         return false;
     }
+
+    // Validate function body
+    if (!fBody.validateTree()) {
+        SemanticAnalyzer.exitScope();
+        return false;
+    }
+    if (!funcReturn.getType().equals("Void")
+        && !fBody.hasReturnStatement()) {
+
+    System.err.println("Semantic Error:");
+    System.err.println("Missing return for non-Void function "
+            + funcName.getToken());
+    System.err.println(funcName.getFilename() + ":"
+            + funcName.getLineNum());
+
+    SemanticAnalyzer.exitScope();
+    return false;
+}
+
+    // Non-Void functions must have a return statement
+    if (!funcReturn.getType().equals("Void")
+            && !fBody.hasReturnStatement()) {
+
+        System.err.println("Semantic Error:");
+        System.err.println("Missing return for non-Void function "
+                + funcName.getToken());
+        System.err.println(funcName.getFilename() + ":"
+                + funcName.getLineNum());
+
+        SemanticAnalyzer.exitScope();
+        return false;
+    }
+
+    SemanticAnalyzer.exitScope();
+    return true;
+}
 
     public boolean registerFunction(){
         FunctionInfo funcInfo = new FunctionInfo(this.funcReturn.getType(), this.funcDefParams.getParameterTypes());

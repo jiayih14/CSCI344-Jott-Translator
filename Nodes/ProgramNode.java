@@ -70,22 +70,44 @@ public class ProgramNode implements JottTree {
         return null;
     }
 
- @Override
+@Override
 public boolean validateTree() {
 
     SemanticAnalyzer.initialize();
     SemanticAnalyzer.enterScope();
 
     // First pass: register every function
-    for (FunctionDefNode node : this.functionDefNode) {
+    for (FunctionDefNode node : functionDefNode) {
         if (!node.registerFunction()) {
             SemanticAnalyzer.exitScope();
             return false;
         }
     }
 
-    // Second pass: validate every function
-    for (FunctionDefNode node : this.functionDefNode) {
+    FunctionInfo main = SemanticAnalyzer.lookupFunction("main");
+
+    if (main == null) {
+        System.err.println("Semantic Error:");
+        System.err.println("Missing/incorrectly defined main function.");
+        SemanticAnalyzer.exitScope();
+        return false;
+    }
+
+if (!main.getReturnType().equals("Void")) {
+    System.err.println("Semantic Error:");
+    System.err.println("Main function must return Void.");
+    SemanticAnalyzer.exitScope();
+    return false;
+}
+
+    if (!main.getParameterTypes().isEmpty()) {
+        System.err.println("Semantic Error:");
+        System.err.println("Main function cannot have parameters.");
+        SemanticAnalyzer.exitScope();
+        return false;
+    }
+
+    for (FunctionDefNode node : functionDefNode) {
         if (!node.validateTree()) {
             SemanticAnalyzer.exitScope();
             return false;

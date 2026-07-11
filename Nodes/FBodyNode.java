@@ -82,4 +82,8 @@ public class FBodyNode implements JottTree {
         }
         return this.bodyNode != null && this.bodyNode.validateTree();
     }
+
+public boolean hasReturnStatement() {
+    return bodyNode != null && bodyNode.hasReturnStatement();
+}
 }

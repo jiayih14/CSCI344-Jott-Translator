@@ -17,6 +17,11 @@ public static void initialize() {
     variableScopes = new Stack<>();
     functions = new HashMap<>();
     currentFunction = null;
+
+    ArrayList<String> params = new ArrayList<>();
+    params.add("Any"); // or whatever your project uses for print's parameter
+
+    functions.put("print", new FunctionInfo("Void", params));
 }
 
     public static void enterScope() {

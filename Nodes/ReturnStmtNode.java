@@ -62,21 +62,37 @@ public class ReturnStmtNode implements JottTree {
         return null;
     }
 
-    @Override
-    public boolean validateTree() {
+@Override
+public boolean validateTree() {
 
-        if (!this.exprNode.validateTree()) {
-            return false;
-        }
-        String expected = SemanticAnalyzer.getCurrentFunction().getReturnType();
-
-        String actual = this.exprNode.getType();
-
-        if (!expected.equals(actual)) {
-            System.err.println("Return type does not match function return type.");
-            return false;
-        }
-
-        return true;
+    if (!exprNode.validateTree()) {
+        return false;
     }
+
+    FunctionInfo currentFunction = SemanticAnalyzer.getCurrentFunction();
+
+    if (currentFunction == null) {
+        System.err.println("Semantic Error:");
+        System.err.println("Return statement outside of a function.");
+        return false;
+    }
+
+    String expected = currentFunction.getReturnType();
+    String actual = exprNode.getType();
+
+    if (actual == null) {
+        return false;
+    }
+
+    if (!expected.equals(actual)) {
+        System.err.println("Semantic Error:");
+        System.err.println("Return type does not match function return type.");
+        return false;
+    }
+
+    return true;
+}
+public String getType() {
+    return exprNode.getType();
+}
 }

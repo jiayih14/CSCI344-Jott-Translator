@@ -60,61 +60,77 @@ public class FuncCallNode implements JottTree {
     public String convertToPython(){
         return null;
     }
+@Override
+public boolean validateTree() {
 
-    @Override
-    public boolean validateTree() {
+    if (!params.validateTree()) {
+        return false;
+    }
 
-        // Validate argument expressions
-        if (!this.params.validateTree()) {
-            return false;
-        }
-
-        // Does the function exist?
-        FunctionInfo function = SemanticAnalyzer.lookupFunction(funcName.getToken());
-
-
-        if (function == null) {
-            System.err.println("Call to unknown function " + this.funcName.getToken());
-            return false;
-        }
-
-        // Check number of parameters
-        int numOfParam = 0;
-        if (this.params.getFirstParam() != null){
-            numOfParam = 1 + this.params.getAdditionalParams().size();
-        }
-        if (numOfParam != function.getParameterTypes().size()) {
-
-            System.err.println("Function " + this.funcName.getToken() + " expects "
-                            + function.getParameterTypes().size()
-                            + " parameter(s)."
-                    );
-
-            return false;
-        }
-
-        // Check each parameter type
-        for (int i = 0; i < numOfParam; i++) {
-
-            String expected = function.getParameterTypes().get(i);
-
-            String actual;
-
-            if (i == 0) {
-                actual = params.getFirstParam().getType();
-            } else {
-                actual = params.getAdditionalParams().get(i - 1).getType();
-            }
-
-            if (!expected.equals(actual)) {
-                System.err.println("Invalid parameter type in call to " + funcName.getToken());
-                return false;
-            }
-        }
+    // Built-in function
+    if (funcName.getToken().equals("print")) {
         return true;
     }
 
-    public String getType(){
-        return SemanticAnalyzer.lookupFunction(funcName.getToken()).getReturnType();
+    FunctionInfo function = SemanticAnalyzer.lookupFunction(funcName.getToken());
+
+    if (function == null) {
+        System.err.println("Semantic Error:");
+        System.err.println("Call to unknown function " + funcName.getToken());
+        System.err.println(funcName.getFilename() + ":" + funcName.getLineNum());
+        return false;
     }
+
+    int actualCount = 0;
+    if (params.getFirstParam() != null) {
+        actualCount = 1 + params.getAdditionalParams().size();
+    }
+
+    int expectedCount = function.getParameterTypes().size();
+
+    if (actualCount != expectedCount) {
+        System.err.println("Semantic Error:");
+        System.err.println("Function " + funcName.getToken()
+                + " expects " + expectedCount
+                + " parameter(s) but received "
+                + actualCount + ".");
+        System.err.println(funcName.getFilename() + ":" + funcName.getLineNum());
+        return false;
+    }
+
+    for (int i = 0; i < actualCount; i++) {
+
+        String expected = function.getParameterTypes().get(i);
+
+        String actual;
+
+        if (i == 0) {
+            actual = params.getFirstParam().getType();
+        } else {
+            actual = params.getAdditionalParams().get(i - 1).getType();
+        }
+
+        if (!expected.equals(actual)) {
+            System.err.println("Semantic Error:");
+            System.err.println("Invalid parameter type in call to function "
+                    + funcName.getToken());
+            System.err.println(funcName.getFilename() + ":" + funcName.getLineNum());
+            return false;
+        }
+    }
+
+    return true;
+}
+
+public String getType() {
+
+    FunctionInfo function =
+            SemanticAnalyzer.lookupFunction(funcName.getToken());
+
+    if (function == null) {
+        return null;
+    }
+
+    return function.getReturnType();
+}
 }
