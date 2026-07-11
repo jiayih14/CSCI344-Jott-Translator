@@ -71,6 +71,14 @@ public class VarDecNode implements JottTree {
             return false;
         }
 
+        String name = this.id.getToken();
+        if (name == null || name.isEmpty() || !Character.isLowerCase(name.charAt(0))) {
+            System.err.println("Semantic Error:");
+            System.err.println("Variable " + name + " must start with a lowercase letter.");
+            System.err.println(id.getFilename() + ":" + id.getLineNum());
+            return false;
+        }
+
         if (!SemanticAnalyzer.declareVariable( this.id.getToken(), this.typeNode.getType())) {
             System.err.println("Semantic Error:");
             System.err.println("Variable " + id.getToken() + " already declared.");

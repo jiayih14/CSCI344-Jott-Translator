@@ -109,6 +109,14 @@ public boolean validateTree() {
 }
 
     public boolean registerFunction(){
+        String name = this.funcName.getToken();
+        if (name == null || name.isEmpty() || !Character.isLowerCase(name.charAt(0))) {
+            System.err.println("Semantic Error:");
+            System.err.println("Function " + name + " must start with a lowercase letter.");
+            System.err.println(this.funcName.getFilename() + ":" + this.funcName.getLineNum());
+            return false;
+        }
+
         FunctionInfo funcInfo = new FunctionInfo(this.funcReturn.getType(), this.funcDefParams.getParameterTypes());
         if(!SemanticAnalyzer.declareFunction(this.funcName.getToken(), funcInfo)){
             System.err.println("Semantic Error:");
