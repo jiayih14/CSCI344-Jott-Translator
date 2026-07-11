@@ -85,36 +85,45 @@ public class OperandNode implements JottTree {
     public String convertToPython(){
         return null;
     }
+@Override
+public boolean validateTree() {
 
-    @Override
-    public boolean validateTree() {
-
-        // Function call operand
-        if (funcCall != null) {
-            return funcCall.validateTree();
-        }
-
-        // Identifier operand
-        if (idOrNum.getTokenType() == TokenType.ID_KEYWORD) {
-            return true;
-        }
-
-        // // Number operand
-        // if (idOrNum.getTokenType() == TokenType.NUMBER) {
-        //     return true;
-        // }
-
-        // // Negative number operand
-        // if (negative && idOrNum.getTokenType() == TokenType.NUMBER) {
-        //     return true;
-        // }
-
-        // // Invalid operand
-        // System.err.println("Semantic Error:");
-        // System.err.println("Invalid operand '" + idOrNum.getToken() + "'");
-        // System.err.println(idOrNum.getFilename() + ":" + idOrNum.getLineNum());
-        return false;
+    // Function call
+    if (funcCall != null) {
+        return funcCall.validateTree();
     }
+
+    // Identifier
+    if (idOrNum.getTokenType() == TokenType.ID_KEYWORD) {
+
+        VariableInfo variable =
+                SemanticAnalyzer.lookupVariable(idOrNum.getToken());
+
+        if (variable == null) {
+            System.err.println("Semantic Error:");
+            System.err.println("Undefined variable " + idOrNum.getToken());
+            System.err.println(idOrNum.getFilename() + ":" + idOrNum.getLineNum());
+            return false;
+        }
+
+        if (!variable.isInitialized()) {
+            System.err.println("Semantic Error:");
+            System.err.println("Variable " + idOrNum.getToken()
+                    + " used before initialization.");
+            System.err.println(idOrNum.getFilename() + ":" + idOrNum.getLineNum());
+            return false;
+        }
+
+        return true;
+    }
+
+    // Number literal
+    if (idOrNum.getTokenType() == TokenType.NUMBER) {
+        return true;
+    }
+//
+    return false;
+}
 
 
     public String getType() {
