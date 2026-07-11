@@ -89,48 +89,13 @@ public class OperandNode implements JottTree {
     @Override
     public boolean validateTree() {
 
-        // Function call
+        // Function call operand
         if (funcCall != null) {
-            if (!funcCall.validateTree()) {
-                return false;
-            }
-
-            String returnType = funcCall.getType();
-            if ("Void".equals(returnType)) {
-                System.err.println("Semantic Error:");
-                System.err.println("Function '" + funcCall.getFuncName()
-                        + "' returns Void and cannot be used as an operand");
-                System.err.println(funcCall.getFuncName().getFilename() + ":"
-                        + funcCall.getFuncName().getLineNum());
-                return false;
-            }
-
-            return true;
+            return funcCall.validateTree();
         }
 
         // Identifier operand
         if (idOrNum.getTokenType() == TokenType.ID_KEYWORD) {
-
-            VariableInfo var = SemanticAnalyzer.lookupVariable(idOrNum.getToken());
-
-            // Undefined
-            if (var == null) {
-                System.err.println("Semantic Error:");
-                System.err.println("Variable '" + idOrNum.getToken()
-                        + "' used before declaration");
-                System.err.println(idOrNum.getFilename() + ":" + idOrNum.getLineNum());
-                return false;
-            }
-
-            // Uninitialized
-            if (!SemanticAnalyzer.isInitialized(idOrNum.getToken())) {
-                System.err.println("Semantic Error:");
-                System.err.println("Variable '" + idOrNum.getToken()
-                        + "' used before initialization");
-                System.err.println(idOrNum.getFilename() + ":" + idOrNum.getLineNum());
-                return false;
-            }
-
             return true;
         }
 
