@@ -98,9 +98,20 @@ public boolean validateTree() {
         return false;
     }
 
+    FunctionDefNode mainNode = null;
+    for (FunctionDefNode node : functionDefNode) {
+        if (node.getNameToken().getToken().equals("main")) {
+            mainNode = node;
+            break;
+        }
+    }
+
 if (!main.getReturnType().equals("Void")) {
     System.err.println("Semantic Error:");
     System.err.println("Main function must return Void.");
+    if (mainNode != null) {
+        System.err.println(mainNode.getNameToken().getFilename() + ":" + mainNode.getNameToken().getLineNum());
+    }
     SemanticAnalyzer.exitScope();
     return false;
 }
@@ -108,6 +119,9 @@ if (!main.getReturnType().equals("Void")) {
     if (!main.getParameterTypes().isEmpty()) {
         System.err.println("Semantic Error:");
         System.err.println("Main function cannot have parameters.");
+        if (mainNode != null) {
+            System.err.println(mainNode.getNameToken().getFilename() + ":" + mainNode.getNameToken().getLineNum());
+        }
         SemanticAnalyzer.exitScope();
         return false;
     }

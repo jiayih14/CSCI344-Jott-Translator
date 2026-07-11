@@ -117,6 +117,10 @@ public boolean validateTree() {
     return true;
 }
 
+public Token getNameToken() {
+    return funcName;
+}
+
 public String getType() {
 
     FunctionInfo function =

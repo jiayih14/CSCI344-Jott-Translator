@@ -63,4 +63,8 @@ public class ParamsTNode implements JottTree {
     public String getType(){
         return this.expr.getType();
     }
+
+    public Token getLocationToken(){
+        return this.expr.getLocationToken();
+    }
 }

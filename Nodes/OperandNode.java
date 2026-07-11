@@ -136,6 +136,13 @@ public boolean validateTree() {
         return Double.parseDouble(idOrNum.getToken()) == 0.0;
     }
 
+    public Token getLocationToken() {
+        if (funcCall != null) {
+            return funcCall.getNameToken();
+        }
+        return idOrNum;
+    }
+
     public String getType() {
 
         // Function call

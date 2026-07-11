@@ -108,6 +108,10 @@ public boolean validateTree() {
     return true;
 }
 
+    public Token getNameToken() {
+        return funcName;
+    }
+
     public boolean registerFunction(){
         String name = this.funcName.getToken();
         if (name == null || name.isEmpty() || !Character.isLowerCase(name.charAt(0))) {
