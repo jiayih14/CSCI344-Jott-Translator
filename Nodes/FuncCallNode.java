@@ -67,11 +67,6 @@ public boolean validateTree() {
         return false;
     }
 
-    // Built-in function
-    if (funcName.getToken().equals("print")) {
-        return true;
-    }
-
     FunctionInfo function = SemanticAnalyzer.lookupFunction(funcName.getToken());
 
     if (function == null) {
@@ -110,7 +105,7 @@ public boolean validateTree() {
             actual = params.getAdditionalParams().get(i - 1).getType();
         }
 
-        if (!expected.equals(actual)) {
+        if (!expected.equals("Any") && !expected.equals(actual)) {
             System.err.println("Semantic Error:");
             System.err.println("Invalid parameter type in call to function "
                     + funcName.getToken());
