@@ -1,0 +1,5 @@
+Def main[]:Void{
+Integer i;
+i = 5;
+::print[::concat["foo", i]];
+}

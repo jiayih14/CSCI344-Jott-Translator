@@ -1,0 +1,7 @@
+Def foo[x:Integer, Y:Double]:Void{
+::print[x];
+::print[Y];
+}
+Def main[]:Void{
+::foo[5, 2.5];
+}

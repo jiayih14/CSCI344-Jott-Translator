@@ -1,0 +1,14 @@
+Def main[]:Void{
+Integer i;
+Double d;
+String s;
+Boolean b;
+i = 5;
+d = 5.5;
+s = "hello";
+b = True;
+::print[i];
+::print[d];
+::print[s];
+::print[b];
+}

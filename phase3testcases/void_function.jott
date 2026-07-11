@@ -1,0 +1,11 @@
+Def foo[x:Integer]:Void{
+If[x > 5]{
+::print[1];
+}
+Else{
+::print[2];
+}
+}
+Def main[]:Void{
+::foo[10];
+}

@@ -1,0 +1,19 @@
+Def isEven[n:Integer]:Boolean{
+If[n == 0]{
+Return True;
+}
+Else{
+Return ::isOdd[n-1];
+}
+}
+Def isOdd[n:Integer]:Boolean{
+If[n == 0]{
+Return False;
+}
+Else{
+Return ::isEven[n-1];
+}
+}
+Def main[]:Void{
+::print[::isEven[4]];
+}

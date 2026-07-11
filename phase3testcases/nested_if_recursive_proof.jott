@@ -1,0 +1,16 @@
+Def foo[x:Integer]:Integer{
+If[x > 5]{
+If[x > 10]{
+Return 1;
+}
+Else{
+Return 2;
+}
+}
+Else{
+Return 3;
+}
+}
+Def main[]:Void{
+::print[::foo[10]];
+}

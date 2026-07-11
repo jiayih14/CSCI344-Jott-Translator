@@ -1,0 +1,9 @@
+Def helper[]:Void{
+::print[1];
+}
+Def main[]:Void{
+::helper[];
+}
+Def unrelated[]:Void{
+::print[2];
+}

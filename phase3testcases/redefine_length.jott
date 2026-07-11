@@ -1,0 +1,6 @@
+Def length[x:String]:Integer{
+Return 1;
+}
+Def main[]:Void{
+::print[5];
+}

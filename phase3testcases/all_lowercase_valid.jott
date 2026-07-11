@@ -1,0 +1,9 @@
+Def helper[x:Integer, y:Double]:Void{
+::print[x];
+::print[y];
+}
+Def main[]:Void{
+Integer a;
+a = 5;
+::helper[a, 2.5];
+}

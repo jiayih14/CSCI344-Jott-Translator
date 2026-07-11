@@ -1,0 +1,6 @@
+Def main[]:Void{
+::helper[];
+}
+Def helper[]:Void{
+::print[1];
+}
