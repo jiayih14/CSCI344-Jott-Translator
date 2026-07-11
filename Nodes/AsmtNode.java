@@ -61,49 +61,21 @@ public class AsmtNode implements JottTree {
         return null;
     }
 
-    @Override
-    public boolean validateTree() {
-
-        if (id == null || expr == null) {
-            return false;
-        }
-
-        if (!expr.validateTree()) {
-            return false;
-        }
-
-        VariableInfo var = SemanticAnalyzer.lookupVariable(id.getToken());
-
-        if (var == null) {
-            System.err.println("Semantic Error:");
-            System.err.println("Use of undefined variable " + id.getToken());
-            System.err.println(id.getFilename() + ":" + id.getLineNum());
-            return false;
-        }
-
-        String declaredType = var.getType();
-
-        String exprType = expr.getType();
-
-        if ("Void".equals(exprType)) {
-            System.err.println("Semantic Error:");
-            System.err.println("Cannot assign Void to variable " + id.getToken());
-            System.err.println(id.getFilename() + ":" + id.getLineNum());
-            return false;
-        }
-
-        if (!declaredType.equals(exprType)) {
-            System.err.println("Semantic Error:");
-            System.err.println("Invalid type in assignment to " + id.getToken());
-            System.err.println("Expected: " + declaredType + ", Found: " + exprType);
-            System.err.println(id.getFilename() + ":" + id.getLineNum());
-            return false;
-        }
-
-        // SemanticAnalyzer.markInitialized(id.getToken());
-
-        return true;
-    }
-
+  @Override
+  public boolean validateTree() {
+      // Expression must exist
+      if (expr == null) {
+          System.err.println("Semantic Error:");
+          System.err.println("Missing expression in assignment");
+          System.err.println(id.getFilename() + ":" + id.getLineNum());
+          return false;
+      }
+      
+      if (!expr.validateTree()) {
+          return false;
+      }
+      
+      return true;
+  }
 
 }
