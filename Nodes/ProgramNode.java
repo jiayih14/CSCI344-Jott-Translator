@@ -76,9 +76,14 @@ public boolean validateTree() {
     SemanticAnalyzer.initialize();
     SemanticAnalyzer.enterScope();
 
-    // First pass: register every function
+    // Register and validate each function in source order, so a function
+    // is only visible to calls that occur at or after its own definition.
     for (FunctionDefNode node : functionDefNode) {
         if (!node.registerFunction()) {
+            SemanticAnalyzer.exitScope();
+            return false;
+        }
+        if (!node.validateTree()) {
             SemanticAnalyzer.exitScope();
             return false;
         }
@@ -105,13 +110,6 @@ if (!main.getReturnType().equals("Void")) {
         System.err.println("Main function cannot have parameters.");
         SemanticAnalyzer.exitScope();
         return false;
-    }
-
-    for (FunctionDefNode node : functionDefNode) {
-        if (!node.validateTree()) {
-            SemanticAnalyzer.exitScope();
-            return false;
-        }
     }
 
     SemanticAnalyzer.exitScope();

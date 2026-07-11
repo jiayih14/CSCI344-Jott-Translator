@@ -124,7 +124,9 @@ public boolean validateTree() {
     public boolean registerFunction(){
         FunctionInfo funcInfo = new FunctionInfo(this.funcReturn.getType(), this.funcDefParams.getParameterTypes());
         if(!SemanticAnalyzer.declareFunction(this.funcName.getToken(), funcInfo)){
+            System.err.println("Semantic Error:");
             System.err.println("Function " + this.funcName.getToken() + " already defined.");
+            System.err.println(this.funcName.getFilename() + ":" + this.funcName.getLineNum());
             return false;
         }
         return true;
