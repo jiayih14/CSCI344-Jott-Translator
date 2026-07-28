@@ -59,18 +59,65 @@ public class FBodyNode implements JottTree {
         result.append(this.bodyNode.convertToJott());
         return result.toString();
     }
+
     @Override
-    public String convertToJava(String className){
-        return null;
+    public String convertToPython() {
+        return convertToPython(1);
+    }
+
+    public String convertToPython(int indentLevel) {
+        StringBuilder sb = new StringBuilder();
+        String indent = "    ".repeat(indentLevel);
+
+        for (VarDecNode vd : varDec) {
+            sb.append(indent)
+              .append(vd.convertToPython())
+              .append("\n");
+        }
+
+        sb.append(bodyNode.convertToPython(indentLevel));
+
+        return sb.toString();
     }
 
     @Override
-    public String convertToC(){
-        return null;
+    public String convertToJava(String className) {
+        return convertToJava(1);
     }
+
+    public String convertToJava(int indentLevel) {
+        StringBuilder sb = new StringBuilder();
+        String indent = "    ".repeat(indentLevel);
+
+        for (VarDecNode vd : varDec) {
+            sb.append(indent)
+              .append(vd.convertToJava())
+              .append(";\n");
+        }
+
+        sb.append(bodyNode.convertToJava(indentLevel));
+
+        return sb.toString();
+    }
+
     @Override
-    public String convertToPython(){
-        return null;
+    public String convertToC() {
+        return convertToC(1);
+    }
+
+    public String convertToC(int indentLevel) {
+        StringBuilder sb = new StringBuilder();
+        String indent = "    ".repeat(indentLevel);
+
+        for (VarDecNode vd : varDec) {
+            sb.append(indent)
+              .append(vd.convertToC())
+              .append(";\n");
+        }
+
+        sb.append(bodyNode.convertToC(indentLevel));
+
+        return sb.toString();
     }
 
     @Override
@@ -83,11 +130,11 @@ public class FBodyNode implements JottTree {
         return this.bodyNode != null && this.bodyNode.validateTree();
     }
 
-public boolean hasReturnStatement() {
-    return bodyNode != null && bodyNode.hasReturnStatement();
-}
+    public boolean hasReturnStatement() {
+        return bodyNode != null && bodyNode.hasReturnStatement();
+    }
 
-public boolean guaranteesReturn() {
-    return bodyNode != null && bodyNode.guaranteesReturn();
-}
+    public boolean guaranteesReturn() {
+        return bodyNode != null && bodyNode.guaranteesReturn();
+    }
 }

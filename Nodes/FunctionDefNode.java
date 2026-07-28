@@ -6,6 +6,11 @@ import provided.TokenType;
 
 import java.util.ArrayList;
 
+/**
+ * File name: FBodyNode.java
+ * Author: Teju Rajbabu
+ *
+ */
 public class FunctionDefNode implements JottTree {
 
     private Token funcName;
@@ -55,58 +60,96 @@ public class FunctionDefNode implements JottTree {
                 + ":" + funcReturn.convertToJott()
                 + "{" + fBody.convertToJott() + "}";
     }
+
     @Override
-    public String convertToJava(String className){
-        return null;
+    public String convertToJava(String className) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("public static ")
+          .append(funcReturn.convertToJava())
+          .append(" ")
+          .append(funcName.getToken())
+          .append("(")
+          .append(funcDefParams.convertToJava())
+          .append(") {\n");
+
+        // function body at indent level 1
+        sb.append(fBody.convertToJava(1));
+
+        sb.append("}\n");
+        return sb.toString();
     }
 
     @Override
-    public String convertToC(){
-        return null;
+    public String convertToC() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(funcReturn.convertToC())
+          .append(" ")
+          .append(funcName.getToken())
+          .append("(")
+          .append(funcDefParams.convertToC())
+          .append(") {\n");
+
+        sb.append(fBody.convertToC(1));
+
+        sb.append("}\n");
+        return sb.toString();
     }
+
     @Override
-    public String convertToPython(){
-        return null;
+    public String convertToPython() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("def ")
+          .append(funcName.getToken())
+          .append("(")
+          .append(funcDefParams.convertToPython())
+          .append("):\n");
+
+        sb.append(fBody.convertToPython(1));
+
+        return sb.toString();
     }
 
-@Override
-public boolean validateTree() {
+    @Override
+    public boolean validateTree() {
 
-    FunctionInfo function =
-            SemanticAnalyzer.lookupFunction(funcName.getToken());
+        FunctionInfo function =
+                SemanticAnalyzer.lookupFunction(funcName.getToken());
 
-    SemanticAnalyzer.setCurrentFunction(function);
+        SemanticAnalyzer.setCurrentFunction(function);
 
-    SemanticAnalyzer.enterScope();
+        SemanticAnalyzer.enterScope();
 
-    // Declare function parameters
-    if (!funcDefParams.validateTree()) {
+        // Declare function parameters
+        if (!funcDefParams.validateTree()) {
+            SemanticAnalyzer.exitScope();
+            return false;
+        }
+
+        // Validate function body
+        if (!fBody.validateTree()) {
+            SemanticAnalyzer.exitScope();
+            return false;
+        }
+        // Non-Void functions must have a guaranteed return path
+        if (!funcReturn.getType().equals("Void")
+            && !fBody.guaranteesReturn()) {
+
+        System.err.println("Semantic Error:");
+        System.err.println("Missing return for non-Void function "
+                + funcName.getToken());
+        System.err.println(funcName.getFilename() + ":"
+                + funcName.getLineNum());
+
         SemanticAnalyzer.exitScope();
         return false;
     }
 
-    // Validate function body
-    if (!fBody.validateTree()) {
         SemanticAnalyzer.exitScope();
-        return false;
+        return true;
     }
-    // Non-Void functions must have a guaranteed return path
-    if (!funcReturn.getType().equals("Void")
-        && !fBody.guaranteesReturn()) {
-
-    System.err.println("Semantic Error:");
-    System.err.println("Missing return for non-Void function "
-            + funcName.getToken());
-    System.err.println(funcName.getFilename() + ":"
-            + funcName.getLineNum());
-
-    SemanticAnalyzer.exitScope();
-    return false;
-}
-
-    SemanticAnalyzer.exitScope();
-    return true;
-}
 
     public Token getNameToken() {
         return funcName;

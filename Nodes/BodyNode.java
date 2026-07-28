@@ -6,7 +6,7 @@ import provided.Token;
 import javax.swing.text.html.parser.Parser;
 import java.util.ArrayList;
 /***
- * @author Kifekachukwu Nwosu, Jiayi Huang
+ * @author Kifekachukwu Nwosu, Jiayi Huang, Teju Rajbabu
  * This class represents the body of a function, which consists of a list of statements and an optional return statement.
  * The body of a function is defined in the Jott grammar as follows:
  */
@@ -39,7 +39,7 @@ public class BodyNode implements JottTree {
 
     @Override
     public String convertToJott() {
-
+        
         StringBuilder sb = new StringBuilder();
 
         for (BodyStmtNode stmt : bodyStmtNodeList) {
@@ -52,18 +52,74 @@ public class BodyNode implements JottTree {
 
         return sb.toString();
     }
+
     @Override
-    public String convertToJava(String className){
-        return null;
+    public String convertToJava(String className) {
+        return convertToJava(1);
+    }
+
+    public String convertToJava(int indentLevel) {
+        StringBuilder sb = new StringBuilder();
+        String indent = "    ".repeat(indentLevel);
+
+        for (BodyStmtNode stmt : bodyStmtNodeList) {
+            sb.append(indent)
+              .append(stmt.convertToJava())
+              .append("\n");
+        }
+
+        if (returnStmtNode != null) {
+            sb.append(indent)
+              .append(returnStmtNode.convertToJava())
+              .append(";\n");
+        }
+
+        return sb.toString();
     }
 
     @Override
-    public String convertToC(){
-        return null;
+    public String convertToC() {
+        return convertToC(1);
     }
+
+    public String convertToC(int indentLevel) {
+        StringBuilder sb = new StringBuilder();
+        String indent = "    ".repeat(indentLevel);
+
+        for (BodyStmtNode stmt : bodyStmtNodeList) {
+            sb.append(indent)
+              .append(stmt.convertToC())
+              .append("\n");
+        }
+
+        if (returnStmtNode != null) {
+            sb.append(indent)
+              .append(returnStmtNode.convertToC())
+              .append(";\n");
+        }
+
+        return sb.toString();
+    }
+
     @Override
-    public String convertToPython(){
-        return null;
+    public String convertToPython() {
+        return convertToPython(1);
+    }
+
+    public String convertToPython(int indentLevel) {
+        StringBuilder sb = new StringBuilder();
+
+        for (BodyStmtNode stmt : bodyStmtNodeList) {
+            sb.append(stmt.convertToPython(indentLevel));
+        }
+
+        if (returnStmtNode != null) {
+            sb.append("    ".repeat(indentLevel))
+              .append(returnStmtNode.convertToPython())
+              .append("\n");
+        }
+
+        return sb.toString();
     }
 
     @Override
