@@ -74,17 +74,26 @@ public class OperandNode implements JottTree {
     }
     @Override
     public String convertToJava(String className){
-        return null;
+    if (funcCall != null) {
+        return funcCall.convertToJava(className);
     }
 
+    return (negative ? "-" : "") + idOrNum.getToken();
+} 
     @Override
     public String convertToC(){
-        return null;
+    if (funcCall != null) {
+        return funcCall.convertToC();
     }
+    return (negative ? "-" : "") + idOrNum.getToken();
+}
     @Override
     public String convertToPython(){
-        return null;
+    if (funcCall != null) {
+        return funcCall.convertToPython();
     }
+    return (negative ? "-" : "") + idOrNum.getToken();
+}
 
  @Override
 public boolean validateTree() {
