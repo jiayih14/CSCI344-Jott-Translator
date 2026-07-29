@@ -96,17 +96,114 @@ public class IfStmtNode implements JottTree {
 
     @Override
     public String convertToJava(String className) {
-        return null;
+        return convertToJava(className, 0);
+    }
+
+    /**
+     * Generates the Java form of this if statement at the given indent level.
+     * The body is generated one level deeper; the elseif/else branches stay at
+     * the same level as the "if" so they line up with it.
+     *
+     * @param className the enclosing Java class name
+     * @param indentLevel the level the "if" keyword itself sits at
+     * @return the Java code for this if statement, newline terminated
+     */
+    public String convertToJava(String className, int indentLevel) {
+        String pad = indent(indentLevel);
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(pad).append("if (").append(condition.convertToJava(className)).append(") {\n");
+        sb.append(ifBody.convertToJava(className, indentLevel + 1));
+        sb.append(pad).append("}");
+
+        // Each branch supplies its own leading " else if" / " else" so it joins
+        // onto the closing brace above rather than starting a new line.
+        for (ElseIfNode e : elseIfList) {
+            sb.append(e.convertToJava(className, indentLevel));
+        }
+
+        if (elseNode != null) {
+            sb.append(elseNode.convertToJava(className, indentLevel));
+        }
+
+        sb.append("\n");
+        return sb.toString();
     }
 
     @Override
     public String convertToC() {
-        return null;
+        return convertToC(0);
+    }
+
+    /**
+     * Generates the C form of this if statement at the given indent level.
+     *
+     * @param indentLevel the level the "if" keyword itself sits at
+     * @return the C code for this if statement, newline terminated
+     */
+    public String convertToC(int indentLevel) {
+        String pad = indent(indentLevel);
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(pad).append("if (").append(condition.convertToC()).append(") {\n");
+        sb.append(ifBody.convertToC(indentLevel + 1));
+        sb.append(pad).append("}");
+
+        for (ElseIfNode e : elseIfList) {
+            sb.append(e.convertToC(indentLevel));
+        }
+
+        if (elseNode != null) {
+            sb.append(elseNode.convertToC(indentLevel));
+        }
+
+        sb.append("\n");
+        return sb.toString();
     }
 
     @Override
     public String convertToPython() {
-        return null;
+        return convertToPython(0);
+    }
+
+    /**
+     * Generates the Python form of this if statement at the given indent level.
+     *
+     * @param indentLevel the level the "if" keyword itself sits at
+     * @return the Python code for this if statement, newline terminated
+     */
+    public String convertToPython(int indentLevel) {
+        String pad = indent(indentLevel);
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(pad).append("if ").append(condition.convertToPython()).append(":\n");
+        sb.append(pythonBody(ifBody, indentLevel + 1));
+
+        for (ElseIfNode e : elseIfList) {
+            sb.append(e.convertToPython(indentLevel));
+        }
+
+        if (elseNode != null) {
+            sb.append(elseNode.convertToPython(indentLevel));
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * Jott allows an empty body, which Python cannot express, so an empty
+     * block becomes a single "pass".
+     */
+    private static String pythonBody(BodyNode body, int indentLevel) {
+        String generated = body.convertToPython(indentLevel);
+        if (generated.isBlank()) {
+            return indent(indentLevel) + "pass\n";
+        }
+        return generated;
+    }
+
+    private static String indent(int indentLevel) {
+        return "    ".repeat(indentLevel);
     }
 
     @Override
