@@ -1,6 +1,6 @@
 /**
  * File name: ParamsNode.java
- * Author: Alvin Jiang and Teju Rajbabu
+ * Author: Alvin Jiang and Teju Rajbabu, Jiayi Huang
  *
  * This file defines the ParamsNode class, which represents a grammar for parameter declaration
  * in the Jott parse tree shown the following:
@@ -57,22 +57,47 @@ public class ParamsNode implements JottTree {
         }
         StringBuilder sb = new StringBuilder(firstParam.convertToJott());
         for (ParamsTNode paramsT : additionalParams) {
+            sb.append(", ");
             sb.append(paramsT.convertToJott());
         }
         return sb.toString();
     }
     @Override
     public String convertToJava(String className){
-        return null;
+        if (this.firstParam == null) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder(this.firstParam.convertToJava(className));
+        for (ParamsTNode paramsT : additionalParams) {
+            sb.append(", ");
+            sb.append(paramsT.convertToJott());
+        }
+        return sb.toString();
     }
 
     @Override
     public String convertToC(){
-        return null;
+        if (this.firstParam == null) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder(this.firstParam.convertToC());
+        for (ParamsTNode paramsT : additionalParams) {
+            sb.append(", ");
+            sb.append(paramsT.convertToC());
+        }
+        return sb.toString();
     }
     @Override
     public String convertToPython(){
-        return null;
+        if (this.firstParam == null) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder(this.firstParam.convertToPython());
+        for (ParamsTNode paramsT : additionalParams) {
+            sb.append(", ");
+            sb.append(paramsT.convertToPython());
+        }
+        return sb.toString();
     }
 
     @Override
