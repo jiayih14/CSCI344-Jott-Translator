@@ -45,20 +45,20 @@ public class FuncCallNode implements JottTree {
 
     @Override
     public String convertToJott() {
-        return "::" + funcName.getToken() + "[" + params.convertToJott() + "]";
+        return "::" + funcName.getToken() + "[" + params.convertToJott() + "];";
     }
     @Override
     public String convertToJava(String className){
-        return null;
+        return className + "." + this.funcName.getToken() + '(' + this.params.convertToJava(className) + ");";
     }
 
     @Override
     public String convertToC(){
-        return null;
+        return this.funcName.getToken() + "(" + this.params.convertToC() + ");";
     }
     @Override
     public String convertToPython(){
-        return null;
+        return this.funcName.getToken() + "(" + this.params.convertToC() + ")";
     }
 @Override
 public boolean validateTree() {

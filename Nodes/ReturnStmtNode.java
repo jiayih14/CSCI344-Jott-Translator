@@ -53,16 +53,16 @@ public class ReturnStmtNode implements JottTree {
     }
     @Override
     public String convertToJava(String className){
-        return null;
+        return "return " + this.exprNode.convertToJava(className) + ";";
     }
 
     @Override
     public String convertToC(){
-        return null;
+        return "return " + this.exprNode.convertToC() + ";";
     }
     @Override
     public String convertToPython(){
-        return null;
+        return "return " + this.exprNode.convertToPython();
     }
 
 @Override
