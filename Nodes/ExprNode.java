@@ -1,6 +1,6 @@
 /**
  * File name: ExprNode.java
- * Author: Alvin Jiang and Teju Rajbabu
+ * Author: Alvin Jiang and Teju Rajbabu and Kifekachukwu Nwosu
  *
  * This file defines the ExprNode class, which represents an expression
  *  in the Jott parse tree shown the following:
@@ -102,17 +102,48 @@ public class ExprNode implements JottTree {
     }
     @Override
     public String convertToJava(String className){
-        return null;
+       if (stringLiteral != null) {
+        return stringLiteral.getToken();
     }
+    if (boolNode != null) {
+        return boolNode.convertToJava(className);
+    }
+    if (operator != null) {
+        return leftOperand.convertToJava(className) + " "
+                + operator.getToken() + " "
+                + rightOperand.convertToJava(className);
+    }
+    return leftOperand.convertToJava(className);
+}
 
     @Override
     public String convertToC(){
-        return null;
+    if (stringLiteral != null) {
+        return stringLiteral.getToken();
     }
+    if (boolNode != null) {
+        return boolNode.convertToC();
+    }
+    if (operator != null) {
+        return leftOperand.convertToC() + " "
+                + operator.getToken() + " "
+                + rightOperand.convertToC();
+    }
+    return leftOperand.convertToC();    }
     @Override
     public String convertToPython(){
-        return null;
+    if (stringLiteral != null) {
+        return stringLiteral.getToken();
     }
+    if (boolNode != null) {
+        return boolNode.convertToPython();
+    }
+    if (operator != null) {
+        return leftOperand.convertToPython() + " "
+                + operator.getToken() + " "
+                + rightOperand.convertToPython();
+    }
+    return leftOperand.convertToPython();}
 
     @Override
     public boolean validateTree() {

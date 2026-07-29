@@ -1,6 +1,6 @@
 /**
  * File name: AsmtNode.java
- * Author: Alvin Jiang and Teju Rajbabu
+ * Author: Alvin Jiang and Teju Rajbabu and Kifekachukwu Nwosu
  *
  * This file defines the AsmtNode class, which represents an assignment
  * statement in the Jott parse tree shown the following:
@@ -43,23 +43,25 @@ public class AsmtNode implements JottTree {
         return new AsmtNode(id, expr);
     }
 
-    @Override
-    public String convertToJott() {
-        return id.getToken() + " = " + expr.convertToJott() + ";";
-    }
-    @Override
-    public String convertToJava(String className){
-        return null;
-    }
+@Override
+public String convertToJott() {
+    return id.getToken() + " = " + expr.convertToJott() + ";";
+}
 
-    @Override
-    public String convertToC(){
-        return null;
-    }
-    @Override
-    public String convertToPython(){
-        return null;
-    }
+@Override
+public String convertToJava(String className){
+    return id.getToken() + " = " + expr.convertToJava(className) + ";";
+}
+
+@Override
+public String convertToC(){
+    return id.getToken() + " = " + expr.convertToC() + ";";
+}
+
+@Override
+public String convertToPython(){
+    return id.getToken() + " = " + expr.convertToPython();
+}
 
 @Override
 public boolean validateTree() {
