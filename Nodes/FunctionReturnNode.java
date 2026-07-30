@@ -57,18 +57,43 @@ public class FunctionReturnNode implements JottTree {
             return this.type.convertToJott();
         }
     }
+    /**
+     * Renders this return type in Java. A Void function, represented by a null
+     * type, becomes "void"; every other type is translated by TypeNode.
+     *
+     * @param className the enclosing Java class name, passed through unchanged
+     * @return the Java return type
+     */
     @Override
     public String convertToJava(String className){
-        return null;
+        if (this.type == null) {
+            return "void";
+        }
+        return this.type.convertToJava(className);
     }
 
+    /**
+     * Renders this return type in C. A Void function becomes "void".
+     *
+     * @return the C return type
+     */
     @Override
     public String convertToC(){
-        return null;
+        if (this.type == null) {
+            return "void";
+        }
+        return this.type.convertToC();
     }
+
+    /**
+     * Python "def" carries no return type, so this contributes nothing for
+     * both Void and non-Void functions.
+     *
+     * @return the empty string
+     */
     @Override
     public String convertToPython(){
-        return null;
+        return "";
     }
 
     @Override

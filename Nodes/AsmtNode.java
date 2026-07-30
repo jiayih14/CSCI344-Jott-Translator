@@ -50,17 +50,17 @@ public String convertToJott() {
 
 @Override
 public String convertToJava(String className){
-    return id.getToken() + " = " + expr.convertToJava(className) + ";";
+    return TargetNames.java(id.getToken()) + " = " + expr.convertToJava(className) + ";";
 }
 
 @Override
 public String convertToC(){
-    return id.getToken() + " = " + expr.convertToC() + ";";
+    return TargetNames.c(id.getToken()) + " = " + expr.convertToC() + ";";
 }
 
 @Override
 public String convertToPython(){
-    return id.getToken() + " = " + expr.convertToPython();
+    return TargetNames.python(id.getToken()) + " = " + expr.convertToPython();
 }
 
 @Override

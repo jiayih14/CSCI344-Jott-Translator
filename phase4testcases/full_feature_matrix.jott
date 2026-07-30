@@ -1,0 +1,130 @@
+#full Phase 4 matrix
+Def noparam[]:Integer{
+    Return 42;
+}
+Def onep[a:Integer]:Integer{
+    Return a;
+}
+Def fourp[a:Integer, b:Double, c:String, d:Boolean]:String{
+    If[d]{
+        Return c;
+    }
+    Return "no";
+}
+Def voidfn[a:Integer]:Void{
+    ::print[a];
+}
+Def boolfn[n:Integer]:Boolean{
+    Return n > 10;
+}
+Def dblfn[x:Double]:Double{
+    Return x * 2.0;
+}
+Def strfn[s:String]:String{
+    Return ::concat[s, "X"];
+}
+Def countdown[n:Integer]:Integer{
+    Integer i;
+    i = n;
+    While[i > 0]{
+        i = i - 1;
+    }
+    Return i;
+}
+Def deep[n:Integer]:Integer{
+    Integer r;
+    r = 0;
+    While[n > 0]{
+        If[n > 3]{
+            While[r > 100]{
+                r = 0;
+            }
+            r = r + 2;
+        }
+        Elseif[n > 2]{
+            If[r > 0]{
+                r = r + 1;
+            }
+            Else{
+                r = 1;
+            }
+        }
+        Elseif[n > 1]{
+            r = r + 10;
+        }
+        Else{
+            r = r + 100;
+        }
+        n = n - 1;
+    }
+    Return r;
+}
+Def recurse[n:Integer]:Integer{
+    If[n > 0]{
+        Return ::recurse[n - 1];
+    }
+    Return 0;
+}
+Def main[]:Void{
+    Integer i;
+    Double d;
+    String s;
+    Boolean b;
+    Integer z;
+    i = 7;
+    d = 2.5;
+    s = "abc";
+    b = True;
+    z = 0;
+    ::print[i + 2];
+    ::print[i - 2];
+    ::print[i * 2];
+    ::print[i / 2];
+    ::print[-7 / 2];
+    ::print[d + 0.5];
+    ::print[d - 0.5];
+    ::print[d * 2.0];
+    ::print[d / 2.0];
+    ::print[2.0 + 3.0];
+    ::print[i > 7];
+    ::print[i >= 7];
+    ::print[i < 7];
+    ::print[i <= 7];
+    ::print[i == 7];
+    ::print[i != 7];
+    ::print[d > 1.0];
+    ::print[b == b];
+    ::print[True];
+    ::print[False];
+    ::print[b];
+    ::print[s];
+    ::print[::noparam[]];
+    ::print[::onep[9]];
+    ::print[::fourp[1, 1.0, "yes", True]];
+    ::voidfn[3];
+    ::print[::boolfn[20]];
+    ::print[::dblfn[1.5]];
+    ::print[::strfn["hi"]];
+    ::print[::countdown[5]];
+    ::print[::deep[5]];
+    ::print[::recurse[4]];
+    ::print[::length[s]];
+    ::print[::length["abcdef"]];
+    ::print[::concat[s, "def"]];
+    ::print[::concat["x", ::concat["y", "z"]]];
+    ::print[::length[::concat[s, "de"]]];
+    ::print[::onep[::length[s]]];
+    ::print[::onep[i] + 1];
+    If[::boolfn[20]]{
+        ::print["cond from function"];
+    }
+    While[z < 2]{
+        ::print[z];
+        z = z + 1;
+    }
+    While[False]{
+        ::print["dead"];
+    }
+    If[b]{
+    }
+}

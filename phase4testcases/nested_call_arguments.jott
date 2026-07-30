@@ -1,0 +1,21 @@
+Def one[a:Integer]:Integer{
+    Return a;
+}
+Def two[a:Integer, b:Integer]:Integer{
+    Return a;
+}
+Def three[a:Integer, b:Integer, c:Integer]:Integer{
+    Return a;
+}
+Def strlen2[s:String, n:Integer]:Integer{
+    Return n;
+}
+Def main[]:Void{
+    ::one[1];
+    ::two[1, 2];
+    ::three[1, 2, 3];
+    ::two[1, ::one[2]];
+    ::three[1, 2, ::one[3]];
+    ::strlen2["x", ::length["abc"]];
+    ::print[::length["abcd"]];
+}

@@ -1,0 +1,8 @@
+Def main[]:Void{
+    Integer int;
+    Integer args;
+    int = 5;
+    args = 2;
+    ::print[int / args];
+    ::print[args];
+}

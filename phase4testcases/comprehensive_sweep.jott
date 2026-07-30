@@ -1,0 +1,103 @@
+#comprehensive Phase 4 feature sweep
+Def addup[a:Integer, b:Integer]:Integer{
+    Return a + b;
+}
+Def isbig[n:Integer, limit:Integer]:Boolean{
+    If[n > limit]{
+        Return True;
+    }
+    Else{
+        Return False;
+    }
+}
+Def grade[n:Integer]:String{
+    If[n > 89]{
+        Return "A";
+    }
+    Elseif[n > 79]{
+        Return "B";
+    }
+    Elseif[n > 69]{
+        Return "C";
+    }
+    Else{
+        Return "F";
+    }
+}
+Def emptybody[]:Void{
+}
+Def nester[n:Integer]:Integer{
+    Integer total;
+    Integer i;
+    total = 0;
+    i = n;
+    While[i > 0]{
+        If[i > 2]{
+            While[total > 100]{
+                total = 0;
+            }
+            total = ::addup[total, i];
+        }
+        Elseif[i > 1]{
+            total = ::addup[total, 10];
+        }
+        Else{
+            If[total > 0]{
+                total = ::addup[total, 100];
+            }
+        }
+        i = i - 1;
+    }
+    Return total;
+}
+Def main[]:Void{
+    Integer x;
+    Double d;
+    String s;
+    Boolean b;
+    x = 5;
+    d = 2.5;
+    s = "jott";
+    b = True;
+    ::print[x];
+    ::print[d];
+    ::print[s];
+    ::print[b];
+    ::print[x + 3];
+    ::print[x - 3];
+    ::print[x * 3];
+    ::print[x / 2];
+    ::print[d * 2.0];
+    ::print[x > 3];
+    ::print[x == 5];
+    ::print[x != 5];
+    ::print[::addup[2, 3]];
+    ::print[::isbig[10, 5]];
+    ::print[::grade[95]];
+    ::print[::grade[85]];
+    ::print[::grade[75]];
+    ::print[::grade[65]];
+    ::print[::nester[4]];
+    ::print[::length[s]];
+    ::print[::concat[s, " lang"]];
+    ::print[::length[::concat[s, "xyz"]]];
+    ::emptybody[];
+    If[b]{
+        ::print["if taken"];
+    }
+    If[x > 99]{
+        ::print["never"];
+    }
+    Else{
+        ::print["else taken"];
+    }
+    While[x > 3]{
+        ::print[x];
+        x = x - 1;
+    }
+    While[False]{
+        ::print["dead"];
+    }
+    If[b]{
+    }
+}

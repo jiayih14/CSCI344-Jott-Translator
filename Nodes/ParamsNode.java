@@ -57,7 +57,7 @@ public class ParamsNode implements JottTree {
         }
         StringBuilder sb = new StringBuilder(firstParam.convertToJott());
         for (ParamsTNode paramsT : additionalParams) {
-            sb.append(", ");
+            // ParamsTNode owns the ", " separator (<params_t> -> ,<expr>)
             sb.append(paramsT.convertToJott());
         }
         return sb.toString();
@@ -69,8 +69,8 @@ public class ParamsNode implements JottTree {
         }
         StringBuilder sb = new StringBuilder(this.firstParam.convertToJava(className));
         for (ParamsTNode paramsT : additionalParams) {
-            sb.append(", ");
-            sb.append(paramsT.convertToJott());
+            // ParamsTNode owns the ", " separator (<params_t> -> ,<expr>)
+            sb.append(paramsT.convertToJava(className));
         }
         return sb.toString();
     }
@@ -82,7 +82,7 @@ public class ParamsNode implements JottTree {
         }
         StringBuilder sb = new StringBuilder(this.firstParam.convertToC());
         for (ParamsTNode paramsT : additionalParams) {
-            sb.append(", ");
+            // ParamsTNode owns the ", " separator (<params_t> -> ,<expr>)
             sb.append(paramsT.convertToC());
         }
         return sb.toString();
@@ -94,7 +94,7 @@ public class ParamsNode implements JottTree {
         }
         StringBuilder sb = new StringBuilder(this.firstParam.convertToPython());
         for (ParamsTNode paramsT : additionalParams) {
-            sb.append(", ");
+            // ParamsTNode owns the ", " separator (<params_t> -> ,<expr>)
             sb.append(paramsT.convertToPython());
         }
         return sb.toString();

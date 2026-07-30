@@ -1,0 +1,16 @@
+Def h[n:Integer]:Integer{
+    If[n > 2]{
+        Return 1;
+    }
+    Elseif[n > 1]{
+        Return 2;
+    }
+    Else{
+        Return 3;
+    }
+}
+Def main[]:Void{
+    ::print[::h[5]];
+    ::print[::h[2]];
+    ::print[::h[0]];
+}

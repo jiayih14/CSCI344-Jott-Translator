@@ -109,12 +109,36 @@ public class ExprNode implements JottTree {
         return boolNode.convertToJava(className);
     }
     if (operator != null) {
+        // Java compares String contents with equals/compareTo; the operators
+        // would compare references, and the ordering ones do not compile at all
+        if (comparesStrings()) {
+            String left = leftOperand.convertToJava(className);
+            String right = rightOperand.convertToJava(className);
+            if (operator.getToken().equals("==")) {
+                return left + ".equals(" + right + ")";
+            }
+            if (operator.getToken().equals("!=")) {
+                return "!" + left + ".equals(" + right + ")";
+            }
+            return left + ".compareTo(" + right + ") " + operator.getToken() + " 0";
+        }
         return leftOperand.convertToJava(className) + " "
                 + operator.getToken() + " "
                 + rightOperand.convertToJava(className);
     }
     return leftOperand.convertToJava(className);
 }
+
+    /**
+     * @return true if this is a relational comparison of two Strings, which
+     *         Java and C cannot express with the operator alone
+     */
+    private boolean comparesStrings() {
+        return operator != null
+                && operator.getTokenType() == TokenType.REL_OP
+                && "String".equals(leftOperand.getType())
+                && "String".equals(rightOperand.getType());
+    }
 
     @Override
     public String convertToC(){
@@ -125,6 +149,13 @@ public class ExprNode implements JottTree {
         return boolNode.convertToC();
     }
     if (operator != null) {
+        // C compares char pointers with the operators, so string contents are
+        // compared through strcmp instead
+        if (comparesStrings()) {
+            return "strcmp(" + leftOperand.convertToC() + ", "
+                    + rightOperand.convertToC() + ") "
+                    + operator.getToken() + " 0";
+        }
         return leftOperand.convertToC() + " "
                 + operator.getToken() + " "
                 + rightOperand.convertToC();
@@ -139,9 +170,18 @@ public class ExprNode implements JottTree {
         return boolNode.convertToPython();
     }
     if (operator != null) {
-        return leftOperand.convertToPython() + " "
+        String expression = leftOperand.convertToPython() + " "
                 + operator.getToken() + " "
                 + rightOperand.convertToPython();
+
+        // Jott integer division truncates, but Python's / always produces a
+        // float, so an integer quotient is truncated back toward zero to match
+        // Jott and the other targets.
+        if (operator.getToken().equals("/") && "Integer".equals(getType())) {
+            return "int(" + expression + ")";
+        }
+
+        return expression;
     }
     return leftOperand.convertToPython();}
 
@@ -226,6 +266,14 @@ public class ExprNode implements JottTree {
         return false;
     }
 
+
+    /**
+     * @return true if this expression is a Boolean literal, which some targets
+     *         cannot accept everywhere a condition is allowed
+     */
+    public boolean isBooleanLiteral() {
+        return this.boolNode != null;
+    }
 
     public Token getLocationToken() {
         if (stringLiteral != null) {

@@ -41,18 +41,32 @@ public class ParamsTNode implements JottTree {
     public String convertToJott() {
         return ", " + expr.convertToJott();
     }
+    /**
+     * Renders one additional argument, separator included. This node owns the
+     * ", " just as it does for Jott, matching <params_t> -> ,<expr>.
+     *
+     * @param className the enclosing Java class name, passed through unchanged
+     * @return this argument preceded by its ", " separator
+     */
     @Override
     public String convertToJava(String className){
-        return null;
+        return ", " + expr.convertToJava(className);
     }
 
+    /**
+     * @return this argument preceded by its ", " separator, in C
+     */
     @Override
     public String convertToC(){
-        return null;
+        return ", " + expr.convertToC();
     }
+
+    /**
+     * @return this argument preceded by its ", " separator, in Python
+     */
     @Override
     public String convertToPython(){
-        return null;
+        return ", " + expr.convertToPython();
     }
 
     @Override
@@ -62,6 +76,14 @@ public class ParamsTNode implements JottTree {
 
     public String getType(){
         return this.expr.getType();
+    }
+
+    /**
+     * @return the expression this argument holds, for callers that need the
+     *         argument itself rather than its rendered parameter list fragment
+     */
+    public ExprNode getExpr(){
+        return this.expr;
     }
 
     public Token getLocationToken(){

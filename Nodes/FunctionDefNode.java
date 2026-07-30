@@ -55,18 +55,114 @@ public class FunctionDefNode implements JottTree {
                 + ":" + funcReturn.convertToJott()
                 + "{" + fBody.convertToJott() + "}";
     }
+    /**
+     * Generates the Java form of this function definition.
+     *
+     * The method sits one level in, inside the class that ProgramNode will
+     * emit, and its body one level deeper. The class wrapper itself is not
+     * generated here.
+     *
+     * Jott's main is special: Java requires "public static void
+     * main(String args[])", so the Jott parameter list and return type are not
+     * used for it.
+     *
+     * @param className the enclosing Java class name, passed through unchanged
+     * @return the Java code for this function, newline terminated
+     */
     @Override
     public String convertToJava(String className){
-        return null;
+
+        StringBuilder sb = new StringBuilder();
+
+        if (isMain()) {
+            sb.append(indent(1)).append("public static void main(String args[]) {\n");
+        } else {
+            sb.append(indent(1)).append("public static ")
+              .append(funcReturn.convertToJava(className)).append(" ")
+              .append(TargetNames.java(funcName.getToken()))
+              .append("(").append(funcDefParams.convertToJava(className)).append(") {\n");
+        }
+
+        sb.append(fBody.convertToJava(className, 2));
+        sb.append(indent(1)).append("}\n");
+
+        return sb.toString();
     }
 
+    /**
+     * Generates the C form of this function definition.
+     *
+     * The signature sits at column zero and the body one level in. The
+     * includes belong to ProgramNode.
+     *
+     * Jott's main is special: C wants "int main(void)" and requires a return,
+     * so "return 1;" is appended. A valid Jott main is Void and therefore
+     * contributes no return statement of its own.
+     *
+     * @return the C code for this function, newline terminated
+     */
     @Override
     public String convertToC(){
-        return null;
+
+        StringBuilder sb = new StringBuilder();
+
+        if (isMain()) {
+            sb.append("int main(void) {\n");
+            sb.append(fBody.convertToC(1));
+            sb.append(indent(1)).append("return 1;\n");
+        } else {
+            String params = funcDefParams.convertToC();
+            if (params.isEmpty()) {
+                // C wants an explicit void for a parameterless function
+                params = "void";
+            }
+            sb.append(funcReturn.convertToC()).append(" ")
+              .append(TargetNames.c(funcName.getToken()))
+              .append("(").append(params).append(") {\n");
+            sb.append(fBody.convertToC(1));
+        }
+
+        sb.append("}\n");
+
+        return sb.toString();
     }
+
+    /**
+     * Generates the Python form of this function definition.
+     *
+     * Python carries no return type, and the trailing call to main belongs to
+     * ProgramNode. An empty body becomes a single "pass", since FBodyNode
+     * returns nothing for a body with no contents.
+     *
+     * @return the Python code for this function, newline terminated
+     */
     @Override
     public String convertToPython(){
-        return null;
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("def ").append(TargetNames.python(funcName.getToken()))
+          .append("(").append(funcDefParams.convertToPython()).append("):\n");
+
+        String body = fBody.convertToPython(1);
+        if (body.isBlank()) {
+            body = indent(1) + "pass\n";
+        }
+        sb.append(body);
+
+        return sb.toString();
+    }
+
+    /**
+     * @return true if this is the Jott main function, which every target
+     *         language translates specially
+     */
+    private boolean isMain() {
+        return "main".equals(funcName.getToken());
+    }
+
+    private static String indent(int indentLevel) {
+        return "    ".repeat(indentLevel);
     }
 
 @Override

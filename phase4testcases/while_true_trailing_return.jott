@@ -1,0 +1,9 @@
+Def f[]:Integer{
+    While[True]{
+        Return 1;
+    }
+    Return 0;
+}
+Def main[]:Void{
+    ::print[::f[]];
+}

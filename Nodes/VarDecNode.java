@@ -53,19 +53,31 @@ public class VarDecNode implements JottTree {
     }
     @Override
     public String convertToJava(String className){
-        return this.typeNode.convertToJava(className) + " " + this.id.getToken() + ";";
+        return this.typeNode.convertToJava(className) + " "
+                + TargetNames.java(this.id.getToken()) + ";";
     }
 
+    /**
+     * A declaration is a statement in C, so it ends in a semicolon just as the
+     * Java and Jott forms do. TypeNode already yields "char *" for String, and
+     * the pointer binds to the name.
+     */
     @Override
     public String convertToC(){
         if(this.typeNode.getType().equals("String")){
-            return this.typeNode.convertToC() + this.id.getToken();
+            return this.typeNode.convertToC() + TargetNames.c(this.id.getToken()) + ";";
         }
-        return this.typeNode.convertToC() + " " + this.id.getToken();
+        return this.typeNode.convertToC() + " " + TargetNames.c(this.id.getToken()) + ";";
     }
+
+    /**
+     * Python has no declaration syntax; a name comes into being when it is
+     * assigned. The spec's example translates "Integer x; x = 5;" to just
+     * "x=5", so a declaration contributes no line at all.
+     */
     @Override
     public String convertToPython(){
-        return this.id.getToken();
+        return "";
     }
 
     @Override

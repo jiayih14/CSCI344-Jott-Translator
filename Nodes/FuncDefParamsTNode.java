@@ -46,18 +46,37 @@ public class FuncDefParamsTNode implements JottTree {
     public String convertToJott() {
         return ", " + id.getToken() + ":" + type.convertToJott();
     }
+    /**
+     * Renders one additional Java parameter, such as ", double y". This node
+     * owns the separator, matching <func_def_params_t> -> ,<id>:<type>.
+     *
+     * @param className the enclosing Java class name, passed through unchanged
+     * @return this parameter preceded by its ", " separator
+     */
     @Override
     public String convertToJava(String className){
-        return null;
+        return ", " + type.convertToJava(className) + " " + TargetNames.java(id.getToken());
     }
 
+    /**
+     * Renders one additional C parameter, such as ", double y".
+     *
+     * @return this parameter preceded by its ", " separator
+     */
     @Override
     public String convertToC(){
-        return null;
+        return ", " + type.convertToC() + " " + TargetNames.c(id.getToken());
     }
+
+    /**
+     * Renders one additional Python parameter, such as ", y". Python
+     * parameters carry names only.
+     *
+     * @return this parameter name preceded by its ", " separator
+     */
     @Override
     public String convertToPython(){
-        return null;
+        return ", " + TargetNames.python(id.getToken());
     }
 
     @Override

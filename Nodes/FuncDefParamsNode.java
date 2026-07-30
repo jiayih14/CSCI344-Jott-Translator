@@ -63,18 +63,68 @@ public class FuncDefParamsNode implements JottTree {
         return result.toString();
     }
 
+    /**
+     * Renders this parameter list as a Java parameter list fragment, such as
+     * "int x, double y". An empty list renders as "". Each tail node supplies
+     * its own ", " separator, so none is added here.
+     *
+     * @param className the enclosing Java class name, passed through unchanged
+     * @return the Java parameter list, without enclosing parentheses
+     */
     @Override
     public String convertToJava(String className){
-        return null;
+        if (id == null) {
+            return "";
+        }
+
+        StringBuilder result = new StringBuilder();
+        result.append(type.convertToJava(className)).append(" ")
+              .append(TargetNames.java(id.getToken()));
+        for (FuncDefParamsTNode node : rest) {
+            result.append(node.convertToJava(className));
+        }
+        return result.toString();
     }
 
+    /**
+     * Renders this parameter list as a C parameter list fragment, such as
+     * "int x, double y". An empty list renders as ""; the "void" that C wants
+     * for a parameterless function is the caller's concern.
+     *
+     * @return the C parameter list, without enclosing parentheses
+     */
     @Override
     public String convertToC(){
-        return null;
+        if (id == null) {
+            return "";
+        }
+
+        StringBuilder result = new StringBuilder();
+        result.append(type.convertToC()).append(" ").append(TargetNames.c(id.getToken()));
+        for (FuncDefParamsTNode node : rest) {
+            result.append(node.convertToC());
+        }
+        return result.toString();
     }
+
+    /**
+     * Renders this parameter list as a Python parameter list fragment, such as
+     * "x, y". Python parameters carry names only.
+     *
+     * @return the Python parameter list, without enclosing parentheses
+     */
     @Override
     public String convertToPython(){
-        return null;
+        if (id == null) {
+            return "";
+        }
+
+        StringBuilder result = new StringBuilder();
+        result.append(TargetNames.python(id.getToken()));
+        for (FuncDefParamsTNode node : rest) {
+            result.append(node.convertToPython());
+        }
+        return result.toString();
     }
 
     @Override

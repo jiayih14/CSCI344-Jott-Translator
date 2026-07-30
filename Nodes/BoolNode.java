@@ -48,18 +48,38 @@ public class BoolNode implements JottTree {
     public String convertToJott() {
         return boolToken.getToken();
     }
+    /**
+     * @return the Java form of this literal: true or false
+     */
     @Override
     public String convertToJava(String className){
-        return null;
+        return isTrue() ? "true" : "false";
     }
 
+    /**
+     * C has no boolean literal without stdbool.h, which is not one of the
+     * headers this translator emits, so the values become 1 and 0.
+     *
+     * @return the C form of this literal: 1 or 0
+     */
     @Override
     public String convertToC(){
-        return null;
+        return isTrue() ? "1" : "0";
     }
+
+    /**
+     * @return the Python form of this literal: True or False
+     */
     @Override
     public String convertToPython(){
-        return null;
+        return isTrue() ? "True" : "False";
+    }
+
+    /**
+     * @return true if this literal is Jott's True
+     */
+    private boolean isTrue() {
+        return "True".equals(this.boolToken.getToken());
     }
 
     public String getType() {

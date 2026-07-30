@@ -63,9 +63,27 @@ public class WhileNode implements JottTree {
      */
     public String convertToJava(String className, int indentLevel) {
         String pad = indent(indentLevel);
-        return pad + "while (" + condition.convertToJava(className) + ") {\n"
+        return pad + "while (" + javaCondition(className) + ") {\n"
                 + body.convertToJava(className, indentLevel + 1)
                 + pad + "}\n";
+    }
+
+    /**
+     * Java applies its unreachable statement rule to a while loop whose
+     * condition is a constant: false makes the body unreachable, and true makes
+     * whatever follows the loop unreachable. Jott allows both, so a literal
+     * condition is boxed, which keeps it out of the constant expression rule
+     * while leaving its value unchanged.
+     *
+     * @param className the enclosing Java class name, passed through unchanged
+     * @return the Java condition for this loop
+     */
+    private String javaCondition(String className) {
+        String generated = condition.convertToJava(className);
+        if (condition.isBooleanLiteral()) {
+            return "Boolean.valueOf(" + generated + ")";
+        }
+        return generated;
     }
 
     @Override
