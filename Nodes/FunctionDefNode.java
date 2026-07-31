@@ -96,8 +96,8 @@ public class FunctionDefNode implements JottTree {
      * includes belong to ProgramNode.
      *
      * Jott's main is special: C wants "int main(void)" and requires a return,
-     * so "return 1;" is appended. A valid Jott main is Void and therefore
-     * contributes no return statement of its own.
+     * so "return 0;" is appended to exit successfully. A valid Jott main is
+     * Void and therefore contributes no return statement of its own.
      *
      * @return the C code for this function, newline terminated
      */
@@ -109,7 +109,7 @@ public class FunctionDefNode implements JottTree {
         if (isMain()) {
             sb.append("int main(void) {\n");
             sb.append(fBody.convertToC(1));
-            sb.append(indent(1)).append("return 1;\n");
+            sb.append(indent(1)).append("return 0;\n");
         } else {
             String params = funcDefParams.convertToC();
             if (params.isEmpty()) {

@@ -74,6 +74,27 @@ public class ProgramNode implements JottTree {
 
         result.append("public class ").append(className).append(" {\n");
 
+        // java prints a double with every digit its binary representation
+        // holds, so 3.1 *-2.2 would come out as -6.820000000000001 instead of
+        // the -6.82 the spec gives...
+        result.append("    static String jott_double(double value) {\n");
+        result.append("        if (value == 0) {\n");
+        result.append("            value = 0;\n");
+        result.append("        }\n");
+        result.append("        String text = String.format(\"%.10g\", value);\n");
+        result.append("        int exponent = text.indexOf('e');\n");
+        result.append("        String digits = exponent < 0 ? text : text.substring(0, exponent);\n");
+        result.append("        String suffix = exponent < 0 ? \"\" : text.substring(exponent);\n");
+        result.append("        if (digits.contains(\".\")) {\n");
+        result.append("            digits = digits.replaceAll(\"0+$\", \"\");\n");
+        result.append("            digits = digits.replaceAll(\"\\\\.$\", \"\");\n");
+        result.append("        }\n");
+        result.append("        if (suffix.isEmpty() && !digits.contains(\".\")) {\n");
+        result.append("            digits = digits + \".0\";\n");
+        result.append("        }\n");
+        result.append("        return digits + suffix;\n");
+        result.append("    }\n");
+
         for (FunctionDefNode node : this.functionDefNode) {
             result.append(node.convertToJava(className));
         }
@@ -117,9 +138,18 @@ public class ProgramNode implements JottTree {
         // Jott prints a Double with a fractional part even when it is whole,
         // as in 3.0 + 2.0 becoming 5.0, which no printf conversion does on its
         // own, so the point is restored when the formatted value lacks one.
+        //
+        // Ten significant digits is the same rounding the Java and Python
+        // targets apply, so a program prints the same text in every language,
+        // and it hides the binary representation error that would otherwise
+        // make 3.1 *-2.2 print as -6.820000000000001 rather than the -6.82 the
+        // spec gives. Negative zero is folded into zero for the same reason.
         result.append("void jott_print_double(double value) {\n");
         result.append("    char buffer[64];\n");
-        result.append("    snprintf(buffer, sizeof(buffer), \"%g\", value);\n");
+        result.append("    if (value == 0) {\n");
+        result.append("        value = 0;\n");
+        result.append("    }\n");
+        result.append("    snprintf(buffer, sizeof(buffer), \"%.10g\", value);\n");
         result.append("    if (strpbrk(buffer, \".eE\") == NULL) {\n");
         result.append("        printf(\"%s.0\\n\", buffer);\n");
         result.append("    } else {\n");
@@ -147,6 +177,19 @@ public class ProgramNode implements JottTree {
     @Override
     public String convertToPython(){
         StringBuilder result = new StringBuilder();
+
+        // Python prints a float with every digit its binary representation
+        // holds, so 3.1 *-2.2 would come out as -6.820000000000001 instead of
+        // the -6.82 the spec gives. Ten significant digits, and a restored
+        // point when rounding leaves a whole number, is what the C and Java
+        // targets print for the same program.
+        result.append("def jott_double(value):\n");
+        result.append("    if value == 0:\n");
+        result.append("        value = 0.0\n");
+        result.append("    text = \"%.10g\" % value\n");
+        result.append("    if \".\" not in text and \"e\" not in text:\n");
+        result.append("        text = text + \".0\"\n");
+        result.append("    return text\n");
 
         for (FunctionDefNode node : this.functionDefNode) {
             result.append(node.convertToPython());

@@ -4,3 +4,6 @@ out
 
 CSCI344-Jott-Translator.iml
 *.class
+
+# scratch file the Phase 4 tester writes while round tripping a program
+phase4testcases/phase4TestTemp.jott

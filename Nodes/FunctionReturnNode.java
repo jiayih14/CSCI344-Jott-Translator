@@ -16,7 +16,6 @@ package Nodes;
 import provided.JottTree;
 import provided.Token;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class FunctionReturnNode implements JottTree {

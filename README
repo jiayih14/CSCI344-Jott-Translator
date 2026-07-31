@@ -1,5 +1,6 @@
-Authors: Teju Rajbabu, Kifekachukwu Nwosu, Alvin Jiang, Jiayi Huang, Matthew Gleich
+# Jott Translator
 
+**Authors: Teju Rajbabu, Kifekachukwu Nwosu, Alvin Jiang, Jiayi Huang, Matthew Gleich**
 
 Phase 1 implements the Jott Tokenizer, responsible for converting a .jott source file into a sequence of tokens based
 on the DFA provided in the project specification. The tokenizer was fully completed, compiled, and tested by all group members.
@@ -7,9 +8,8 @@ on the DFA provided in the project specification. The tokenizer was fully comple
 Phase 2 implements the Jott Parser. This takes in a list of tokens and verify the syntax layer of Jott.
 The Parser was fully completed, compiled, and tested by all group members.
 
-
 This project requires JDK 18 or higher to compile and run. This should be checked before compilation with
-	java -version and javac -version. Environment variables should also include the path to the JDK bin directory.
+java -version and javac -version. Environment variables should also include the path to the JDK bin directory.
 
 This should compile the project:
 javac provided/*.java testers/JottTokenizerTester.java
@@ -17,9 +17,9 @@ javac provided/*.java testers/JottTokenizerTester.java
 This should run the project:
 java testers.JottTokenizerTester
 
-This has been tested by all members. 
+This has been tested by all members.
 
-As expected of the project structure: 
+As expected of the project structure:
 The provided package should be a top-level package in the src/ folder.
 
 The tester classes (Jott PaserTester and JottTokenizerTester), should be in a package named testers.
@@ -30,15 +30,19 @@ Phase 1: All test cases ran successfully with 12/12 passed.
 Project tested with other samples in own environments and confirmed by individual contributors.
 Project was tested on cs servers and is confirmed to run successfully with no errors.
 
-
 Phase 2: All test cases ran successfully with 30/30 passed.
 Project was tested on cs servers and is confirmed to run successfully with no errors.
 
-Phase 3 implements semantic analysis for Jott. 
-The parse tree is validated using validateTree() methods implemented throughout the node classes. 
-Semantic checks include undefined variables/functions, invalid type assignments, incorrect function parameters, missing return statements, uninitialized variables, 
-and other semantic rules specified in the project description. 
+Phase 3 implements semantic analysis for Jott.
+The parse tree is validated using validateTree() methods implemented throughout the node classes.
+Semantic checks include undefined variables/functions, invalid type assignments, incorrect function parameters, missing return statements, uninitialized variables,
+and other semantic rules specified in the project description.
 Jott.java was also implemented as the main driver for tokenizing, parsing, and semantic validation.
+
+Phase 4 implements code generation. The convertToJott(), convertToJava(), convertToC(), and convertToPython()
+methods are implemented throughout the node classes, so a validated tree is translated to Jott, Java, C, or
+Python and written to the requested output file. A program is only translated after tokenizing, parsing, and
+semantic validation all succeed; an invalid program reports its error and writes no output file.
 
 ### How to Run
 
@@ -58,14 +62,40 @@ Compile the project:
 
 javac Jott.java Nodes/*.java provided/*.java
 
-Run the compiler:
+Run the translator, where <target_language> is one of Jott, Java, C, or Python:
 
 java Jott <input.jott> <output_file> <target_language>
 
-Example:
+Examples:
 
-java Jott phase3testcases/funcNotDefined.jott output.java Java
+java Jott foo.jott new.jott Jott
+java Jott foo.jott NewJott.java Java
+java Jott foo.jott new.c C
+java Jott foo.jott new.python Python
 
-Note: During Phase 3, the compiler performs tokenization, parsing, and semantic validation only. 
-The output file and target language arguments are required for compatibility with later phases, but code generation has not yet been implemented.
+Giving the same file name for input and output overwrites the original.
+
+To compile and run the generated code:
+
+javac NewJott.java && java NewJott
+gcc -o new new.c && ./new
+python3 new.python
+
+To compile and run the testers:
+
+javac Jott.java Nodes/*.java provided/*.java testers/*.java
+java testers.JottTokenizerTester
+java testers.JottParserTester
+java testers.JottSemanticTester
+java testers.JottPhase4Tester
+
+Each tester expects its test case directory (tokenizerTestCases, parserTestCases, phase3testcases,
+phase4testcases) to be in the working directory the tester is run from.
+
+Phase 3: All test cases ran successfully with 63/63 passed.
+
+Phase 4: All test cases ran successfully with 20/20 passed.
+Every Phase 4 test program was additionally translated to Java, C, and Python, compiled with javac and gcc,
+and run; all three produce identical output for every program.
+
 No external libraries were used in the project.

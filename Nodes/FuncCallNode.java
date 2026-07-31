@@ -100,6 +100,10 @@ public class FuncCallNode implements JottTree {
             return "System.out.println((" + value + ") ? \"True\" : \"False\")";
         }
 
+        if ("Double".equals(argument.getType())) {
+            return "System.out.println(jott_double(" + value + "))";
+        }
+
         return "System.out.println(" + value + ")";
     }
 
@@ -208,7 +212,7 @@ public class FuncCallNode implements JottTree {
 
         switch (name) {
             case "print":
-                return "print(" + args + ")";
+                return pythonPrint(args);
             case "concat":
                 return pythonConcat();
             case "length":
@@ -216,6 +220,25 @@ public class FuncCallNode implements JottTree {
             default:
                 return TargetNames.python(name) + "(" + args + ")";
         }
+    }
+
+    /**
+     * Builds the Python print call. Booleans already print as True and False,
+     * so only a Double needs the helper ProgramNode emits to print the same
+     * text the other targets do.
+     *
+     * @param args the translated argument list
+     * @return the print expression for this call
+     */
+    private String pythonPrint(String args) {
+
+        ExprNode argument = this.params.getFirstParam();
+
+        if (argument != null && "Double".equals(String.valueOf(argument.getType()))) {
+            return "print(jott_double(" + argument.convertToPython() + "))";
+        }
+
+        return "print(" + args + ")";
     }
 
     /**
