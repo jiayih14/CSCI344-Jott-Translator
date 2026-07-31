@@ -1,0 +1,26 @@
+Def gets[s:String]:Integer{
+    Return ::length[s];
+}
+Def sizeof[n:Integer]:Integer{
+    Return n;
+}
+Def len[n:Integer]:Integer{
+    Return n;
+}
+Def free[n:Integer]:Integer{
+    Return n;
+}
+Def toString[n:Integer]:Integer{
+    Return n;
+}
+Def normalname[n:Integer]:Integer{
+    Return n;
+}
+Def main[]:Void{
+    ::print[::gets["abcd"]];
+    ::print[::sizeof[1]];
+    ::print[::len[2]];
+    ::print[::free[3]];
+    ::print[::toString[4]];
+    ::print[::normalname[5]];
+}

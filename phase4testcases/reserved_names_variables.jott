@@ -1,0 +1,15 @@
+Def helper[class:Integer, def:Integer]:Integer{
+    Return class + def;
+}
+Def main[]:Void{
+    Integer int;
+    Integer for;
+    String len;
+    int = 4;
+    for = 5;
+    len = "abc";
+    ::print[int];
+    ::print[for];
+    ::print[::length[len]];
+    ::print[::helper[1, 2]];
+}

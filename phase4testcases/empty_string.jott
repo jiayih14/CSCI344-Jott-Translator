@@ -1,0 +1,7 @@
+Def main[]:Void{
+    String s;
+    s = "";
+    ::print[s];
+    ::print[::length[s]];
+    ::print[::concat[s, "ab"]];
+}

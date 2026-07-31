@@ -1,0 +1,13 @@
+Def build[s:String]:String{
+    Return ::concat[s, "cd"];
+}
+Def main[]:Void{
+    String a;
+    String b;
+    a = ::build["ab"];
+    b = "abcd";
+    ::print[a == b];
+    ::print[a != b];
+    ::print[a < b];
+    ::print[a >= b];
+}

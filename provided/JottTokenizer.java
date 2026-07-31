@@ -183,7 +183,9 @@ public class JottTokenizer {
 				}
 			}
 		} catch (IOException e){
-			System.out.println(e.getMessage());
+			// the file could not be read, so there are no tokens to return
+			System.err.println("Syntax Error\n" + e.getMessage() + "\n" + filename);
+			return null;
 		}
 		return tokens;
 	}

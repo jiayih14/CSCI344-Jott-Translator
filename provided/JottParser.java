@@ -26,7 +26,7 @@ public class JottParser {
         try {
             root = ProgramNode.parse(tokens);
         } catch (JottParseException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             return null;
         }
         return root;

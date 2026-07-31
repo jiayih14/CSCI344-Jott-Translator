@@ -1,0 +1,17 @@
+Def takesb[b:Boolean]:Boolean{
+    Return b;
+}
+Def main[]:Void{
+    Boolean t;
+    Boolean f;
+    t = True;
+    f = False;
+    If[True]{
+        ::print[True];
+    }
+    While[False]{
+        ::print[False];
+    }
+    ::print[::takesb[True]];
+    ::print[::takesb[False]];
+}

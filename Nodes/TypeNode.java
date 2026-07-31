@@ -60,17 +60,26 @@ public class TypeNode implements JottTree {
             case "Integer" -> "int";
             case "Double" -> "double";
             case "String" -> "String";
-            default -> "bool";
+            case "Boolean" -> "boolean";
+            // parsing and validation admit only the four types above
+            default -> this.typeToken.getToken();
         };
     }
 
+    /**
+     * C has no string or boolean type of its own: strings are character
+     * pointers, and Boolean becomes int because stdbool.h is not among the
+     * headers this translator emits and BoolNode already yields 1 and 0.
+     */
     @Override
     public String convertToC(){
         return switch (this.typeToken.getToken()) {
             case "Integer" -> "int";
             case "Double" -> "double";
-            case "String" -> "String";
-            default -> "char *";
+            case "String" -> "char *";
+            case "Boolean" -> "int";
+            // parsing and validation admit only the four types above
+            default -> this.typeToken.getToken();
         };
     }
     @Override

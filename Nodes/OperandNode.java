@@ -25,6 +25,10 @@ public class OperandNode implements JottTree {
     private boolean negative;
     private FuncCallNode funcCall;
 
+    // The type semantic analysis resolved for this operand, kept so code
+    // generation can still ask after the scopes have been popped.
+    private String resolvedType;
+
     /**
      * Constructor for Operand Node that takes in id/num and sign
      * @param idOrNum id or num token
@@ -77,13 +81,18 @@ public class OperandNode implements JottTree {
     if (funcCall != null) {
         return funcCall.convertToJava(className);
     }
-
+    if (isIdentifier()) {
+        return TargetNames.java(idOrNum.getToken());
+    }
     return (negative ? "-" : "") + idOrNum.getToken();
-} 
+}
     @Override
     public String convertToC(){
     if (funcCall != null) {
         return funcCall.convertToC();
+    }
+    if (isIdentifier()) {
+        return TargetNames.c(idOrNum.getToken());
     }
     return (negative ? "-" : "") + idOrNum.getToken();
 }
@@ -92,8 +101,19 @@ public class OperandNode implements JottTree {
     if (funcCall != null) {
         return funcCall.convertToPython();
     }
+    if (isIdentifier()) {
+        return TargetNames.python(idOrNum.getToken());
+    }
     return (negative ? "-" : "") + idOrNum.getToken();
 }
+
+    /**
+     * @return true if this operand is a variable name, which the target may
+     *         need renamed; numbers are never renamed
+     */
+    private boolean isIdentifier() {
+        return idOrNum != null && idOrNum.getTokenType() == TokenType.ID_KEYWORD;
+    }
 
  @Override
 public boolean validateTree() {
@@ -115,6 +135,9 @@ public boolean validateTree() {
             System.err.println(idOrNum.getFilename() + ":" + idOrNum.getLineNum());
             return false;
         }
+
+        // remember what this name resolved to while the scope still exists
+        this.resolvedType = variable.getType();
 
         if (!variable.isInitialized()) {
             System.err.println("Semantic Error:");
@@ -165,11 +188,14 @@ public boolean validateTree() {
             VariableInfo variable =
                     SemanticAnalyzer.lookupVariable(idOrNum.getToken());
 
-            if (variable == null) {
-                return null;
+            if (variable != null) {
+                this.resolvedType = variable.getType();
+                return this.resolvedType;
             }
 
-            return variable.getType();
+            // The scope this name lived in is gone, which is the normal state
+            // during code generation, so fall back to what validation resolved.
+            return this.resolvedType;
         }
 
         // Number

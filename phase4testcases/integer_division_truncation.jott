@@ -1,0 +1,16 @@
+Def main[]:Void{
+    Double a;
+    Double b;
+    a = 5.0;
+    b = 2.0;
+    ::print[5/2];
+    ::print[0/5];
+    ::print[-5/2];
+    ::print[7/2];
+    ::print[5.0/2.0];
+    ::print[a/b];
+    ::print[6/3];
+    ::print[5*2];
+    ::print[5-2];
+    ::print[5+2];
+}

@@ -1,0 +1,26 @@
+Def geti[]:Integer{
+    Return 5;
+}
+Def main[]:Void{
+    Integer x;
+    Double d;
+    String s;
+    Boolean b;
+    x = 5;
+    d = 2.5;
+    s = "abc";
+    b = False;
+    ::print[1];
+    ::print[3.14];
+    ::print["hello"];
+    ::print[True];
+    ::print[x];
+    ::print[d];
+    ::print[s];
+    ::print[b];
+    ::print[1 + 2];
+    ::print[x + 1];
+    ::print[::length["abc"]];
+    ::print[::geti[]];
+    ::print[x > 1];
+}

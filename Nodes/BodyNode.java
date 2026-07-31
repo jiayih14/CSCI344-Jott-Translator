@@ -3,7 +3,6 @@ package Nodes;
 import provided.JottTree;
 import provided.Token;
 
-import javax.swing.text.html.parser.Parser;
 import java.util.ArrayList;
 /***
  * @author Kifekachukwu Nwosu, Jiayi Huang
@@ -54,16 +53,105 @@ public class BodyNode implements JottTree {
     }
     @Override
     public String convertToJava(String className){
-        return null;
+        return convertToJava(className, 0);
+    }
+
+    /**
+     * Generates the Java form of this body with its contents rendered at the
+     * given indent level.
+     *
+     * The level received is the level of the body's own statements; it is not
+     * incremented here. Control flow parents already pass indentLevel + 1.
+     *
+     * Each BodyStmtNode owns the indentation and newline of the statement it
+     * holds, so it is delegated to at the same level. ReturnStmtNode is a leaf
+     * that indents nothing and supplies its own ';', so this method adds its
+     * indentation and newline.
+     *
+     * @param className the enclosing Java class name, passed through unchanged
+     * @param indentLevel the level this body's statements sit at
+     * @return the Java code for this body, or "" when the body is empty
+     */
+    public String convertToJava(String className, int indentLevel) {
+
+        StringBuilder sb = new StringBuilder();
+
+        for (BodyStmtNode stmt : bodyStmtNodeList) {
+            sb.append(stmt.convertToJava(className, indentLevel));
+        }
+
+        if (returnStmtNode != null) {
+            sb.append(indent(indentLevel))
+              .append(returnStmtNode.convertToJava(className))
+              .append("\n");
+        }
+
+        return sb.toString();
     }
 
     @Override
     public String convertToC(){
-        return null;
+        return convertToC(0);
     }
+
+    /**
+     * Generates the C form of this body with its contents rendered at the given
+     * indent level.
+     *
+     * @param indentLevel the level this body's statements sit at
+     * @return the C code for this body, or "" when the body is empty
+     */
+    public String convertToC(int indentLevel) {
+
+        StringBuilder sb = new StringBuilder();
+
+        for (BodyStmtNode stmt : bodyStmtNodeList) {
+            sb.append(stmt.convertToC(indentLevel));
+        }
+
+        if (returnStmtNode != null) {
+            sb.append(indent(indentLevel))
+              .append(returnStmtNode.convertToC())
+              .append("\n");
+        }
+
+        return sb.toString();
+    }
+
     @Override
     public String convertToPython(){
-        return null;
+        return convertToPython(0);
+    }
+
+    /**
+     * Generates the Python form of this body with its contents rendered at the
+     * given indent level.
+     *
+     * An empty body returns an empty string; the control flow parents are
+     * responsible for substituting "pass" where Python requires a statement.
+     *
+     * @param indentLevel the level this body's statements sit at
+     * @return the Python code for this body, or "" when the body is empty
+     */
+    public String convertToPython(int indentLevel) {
+
+        StringBuilder sb = new StringBuilder();
+
+        for (BodyStmtNode stmt : bodyStmtNodeList) {
+            sb.append(stmt.convertToPython(indentLevel));
+        }
+
+        if (returnStmtNode != null) {
+            sb.append(indent(indentLevel))
+              .append(returnStmtNode.convertToPython())
+              .append("\n");
+        }
+
+        return sb.toString();
+    }
+
+    private static String indent(int indentLevel) {
+        return "    ".repeat(indentLevel);
     }
 
     @Override

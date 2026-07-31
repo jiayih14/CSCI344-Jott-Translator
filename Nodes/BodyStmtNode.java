@@ -88,16 +88,112 @@ public class BodyStmtNode implements JottTree {
 
     @Override
     public String convertToJava(String className){
-        return null;
+        return convertToJava(className, 0);
+    }
+
+    /**
+     * Generates the Java form of this statement at the given indent level.
+     *
+     * If and While own their own indentation, nested body indentation, and
+     * trailing newline, so they are passed through untouched. Leaf statements
+     * get their indentation and newline from here.
+     *
+     * A function call is an expression in the Jott grammar
+     * (<operand> -> <func_call>), so the statement level semicolon is added
+     * here. An assignment is already a statement and supplies its own.
+     *
+     * @param className the enclosing Java class name
+     * @param indentLevel the level this statement sits at
+     * @return the Java code for this statement, newline terminated
+     */
+    public String convertToJava(String className, int indentLevel) {
+
+        if (ifStmtNode != null) {
+            return ifStmtNode.convertToJava(className, indentLevel);
+        }
+
+        if (whileNode != null) {
+            return whileNode.convertToJava(className, indentLevel);
+        }
+
+        if (asmtNode != null) {
+            return indent(indentLevel) + asmtNode.convertToJava(className) + "\n";
+        }
+
+        if (funcCallNode != null) {
+            return indent(indentLevel) + funcCallNode.convertToJava(className) + ";\n";
+        }
+
+        return "";
     }
 
     @Override
     public String convertToC(){
-        return null;
+        return convertToC(0);
     }
+
+    /**
+     * Generates the C form of this statement at the given indent level.
+     *
+     * @param indentLevel the level this statement sits at
+     * @return the C code for this statement, newline terminated
+     */
+    public String convertToC(int indentLevel) {
+
+        if (ifStmtNode != null) {
+            return ifStmtNode.convertToC(indentLevel);
+        }
+
+        if (whileNode != null) {
+            return whileNode.convertToC(indentLevel);
+        }
+
+        if (asmtNode != null) {
+            return indent(indentLevel) + asmtNode.convertToC() + "\n";
+        }
+
+        if (funcCallNode != null) {
+            return indent(indentLevel) + funcCallNode.convertToC() + ";\n";
+        }
+
+        return "";
+    }
+
     @Override
     public String convertToPython(){
-        return null;
+        return convertToPython(0);
+    }
+
+    /**
+     * Generates the Python form of this statement at the given indent level.
+     * Python takes no statement terminator, only the newline.
+     *
+     * @param indentLevel the level this statement sits at
+     * @return the Python code for this statement, newline terminated
+     */
+    public String convertToPython(int indentLevel) {
+
+        if (ifStmtNode != null) {
+            return ifStmtNode.convertToPython(indentLevel);
+        }
+
+        if (whileNode != null) {
+            return whileNode.convertToPython(indentLevel);
+        }
+
+        if (asmtNode != null) {
+            return indent(indentLevel) + asmtNode.convertToPython() + "\n";
+        }
+
+        if (funcCallNode != null) {
+            return indent(indentLevel) + funcCallNode.convertToPython() + "\n";
+        }
+
+        return "";
+    }
+
+    private static String indent(int indentLevel) {
+        return "    ".repeat(indentLevel);
     }
 
     @Override

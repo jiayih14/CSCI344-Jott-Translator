@@ -1,0 +1,19 @@
+Def strsize[s:String]:Integer{
+    Return ::length[s];
+}
+Def takes[n:Integer]:Integer{
+    Return n;
+}
+Def main[]:Void{
+    Integer x;
+    String s;
+    s = "hello";
+    x = ::length["abc"];
+    ::print[x];
+    ::print[::length["a"]];
+    ::print[::length["abc"]];
+    ::print[::length[s]];
+    ::print[::length[::concat["ab", "cd"]]];
+    ::print[::strsize["abcdef"]];
+    ::print[::takes[::length["ab"]]];
+}

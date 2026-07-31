@@ -1,0 +1,31 @@
+Def joins[a:String, b:String]:String{
+    Return ::concat[a, b];
+}
+Def takes[s:String]:Integer{
+    Return ::length[s];
+}
+Def left[]:String{
+    Return "L";
+}
+Def right[]:String{
+    Return "R";
+}
+Def main[]:Void{
+    String s;
+    String t;
+    s = "abc";
+    t = "de";
+    ::print[::concat["a", "b"]];
+    ::print[::concat[s, "x"]];
+    ::print[::concat["x", s]];
+    ::print[::concat[s, t]];
+    ::print[::concat[::concat["a", "b"], "c"]];
+    ::print[::concat["x", ::concat["y", "z"]]];
+    ::print[::concat[::concat["a", "b"], ::concat["c", "d"]]];
+    ::print[::length[::concat["abc", "de"]]];
+    ::print[::joins["hello", " world"]];
+    ::print[::takes[::concat["ab", "cde"]]];
+    ::print[::concat[::left[], ::right[]]];
+    s = ::concat["new", "val"];
+    ::print[s];
+}

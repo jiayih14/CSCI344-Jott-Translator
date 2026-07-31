@@ -1,0 +1,16 @@
+Def f[]:Integer{
+    If[True]{
+        Return 1;
+    }
+    Return 0;
+}
+Def g[]:Integer{
+    If[False]{
+        Return 1;
+    }
+    Return 0;
+}
+Def main[]:Void{
+    ::print[::f[]];
+    ::print[::g[]];
+}
