@@ -12,10 +12,12 @@ This project requires JDK 18 or higher to compile and run. This should be checke
 java -version and javac -version. Environment variables should also include the path to the JDK bin directory.
 
 This should compile the project:
-javac provided/*.java testers/JottTokenizerTester.java
+javac Jott.java Nodes/*.java provided/*.java
 
 This should run the project:
-java testers.JottTokenizerTester
+java Jott <input.jott> <output_file> <target_language>
+
+See "How to Run" below for the target languages and for building the testers.
 
 This has been tested by all members.
 
